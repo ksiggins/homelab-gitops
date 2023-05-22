@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: traefik
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    path: infra/traefik
+    repoURL: https://github.com/ksiggins/homelab-gitops.git
+    targetRevision: HEAD
+  destination:
+    name: workload1
+    namespace: traefik-v2
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+    automated:
+      prune: true
+      selfHeal: true
