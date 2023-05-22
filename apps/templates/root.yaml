@@ -8,8 +8,8 @@ spec:
   project: default
   source:
     path: apps
-    repoURL: {{ .Values.spec.source.repoURL }}
-    targetRevision: {{ .Values.spec.source.targetRevision }}
+    repoURL: https://github.com/ksiggins/homelab-gitops.git
+    targetRevision: HEAD
   destination:
     name: in-cluster
     namespace: default

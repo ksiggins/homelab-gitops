@@ -1,4 +1,0 @@
-spec:
-  source:
-    repoURL: https://github.com/ksiggins/homelab-gitops.git
-    targetRevision: HEAD

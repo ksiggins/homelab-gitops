@@ -8,8 +8,8 @@ spec:
   project: default
   source:
     path: infra/metallb
-    repoURL: {{ .Values.spec.source.repoURL }}
-    targetRevision: {{ .Values.spec.source.targetRevision }}
+    repoURL: https://github.com/ksiggins/homelab-gitops.git
+    targetRevision: HEAD
   destination:
     name: workload1
     namespace: metallb-system
