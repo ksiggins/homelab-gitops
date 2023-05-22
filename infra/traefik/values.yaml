@@ -1,3 +1,9 @@
+spec:
+  routes: traefik.local.supermorphic.com
+
+data:
+  users: YWRtaW46JGFwcjEkOXZsSUhPNHkkOXBQZnZmcXQybmhJNi5qbVREdVpKMAoK
+
 traefik:
   deployment:
     replicas: 3
