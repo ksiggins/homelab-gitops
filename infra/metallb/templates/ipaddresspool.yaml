@@ -5,4 +5,6 @@ metadata:
   namespace: metallb-system
 spec:
   addresses:
-  - 192.168.100.80/32
+    {{- range .Values.spec.addresses }}
+    - {{ . }}
+    {{- end }}
