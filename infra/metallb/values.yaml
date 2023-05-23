@@ -1,3 +1,2 @@
-spec:
-  addresses:
-    - 192.168.100.80/32
+ipAddressPool:
+  - 192.168.100.80/32
