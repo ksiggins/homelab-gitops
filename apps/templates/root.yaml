@@ -2,18 +2,26 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: root
+  labels:
+    app.kubernetes.io/part-of: homelab-gitops
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
   finalizers:
-  - resources-finalizer.argocd.argoproj.io
+    - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
-    path: apps
     repoURL: https://github.com/ksiggins/homelab-gitops.git
+    path: apps
     targetRevision: HEAD
   destination:
     name: in-cluster
     namespace: default
   syncPolicy:
+    syncOptions:
+      - Validate=false
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
     automated:
       prune: true
       selfHeal: true

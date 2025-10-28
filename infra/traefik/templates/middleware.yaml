@@ -2,7 +2,12 @@ apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:
   name: traefik-dashboard-basicauth
-  namespace: traefik-v2
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: traefik
+    app.kubernetes.io/component: dashboard
+    app.kubernetes.io/part-of: homelab-gitops
 spec:
   basicAuth:
     secret: traefik-dashboard-auth
+    removeHeader: true

@@ -2,20 +2,27 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: traefik
+  labels:
+    app.kubernetes.io/part-of: homelab-gitops
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
   finalizers:
-  - resources-finalizer.argocd.argoproj.io
+    - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
-    path: infra/traefik
     repoURL: https://github.com/ksiggins/homelab-gitops.git
+    path: infra/traefik
     targetRevision: HEAD
   destination:
-    name: workload1
+    name: in-cluster
     namespace: traefik-v2
   syncPolicy:
     syncOptions:
       - CreateNamespace=true
+      - Validate=false
+      - ApplyOutOfSyncOnly=true
+      - RespectIgnoreDifferences=true
     automated:
       prune: true
       selfHeal: true

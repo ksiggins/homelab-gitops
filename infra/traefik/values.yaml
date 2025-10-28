@@ -3,16 +3,22 @@ ingressRoute:
 dashboard:
   basicAuth:
     secret: YWRtaW46JGFwcjEkOXZsSUhPNHkkOXBQZnZmcXQybmhJNi5qbVREdVpKMAoK
-
 traefik:
   deployment:
     replicas: 3
+  service:
+    enabled: true
+    type: LoadBalancer
   ingressRoute:
     dashboard:
       enabled: false
   globalArguments:
     - "--global.checknewversion=false"
     - "--global.sendanonymoususage=false"
+  additionalArguments:
+    - "--serversTransport.insecureSkipVerify=true"
+    - "--entryPoints.web.address=:80"
+    - "--entryPoints.websecure.address=:443"
   ports:
     web:
       redirectTo: websecure

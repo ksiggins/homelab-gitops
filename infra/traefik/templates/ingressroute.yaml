@@ -2,7 +2,11 @@ apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
   name: traefik-dashboard
-  namespace: traefik-v2
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: traefik
+    app.kubernetes.io/component: dashboard
+    app.kubernetes.io/part-of: homelab-gitops
 spec:
   entryPoints:
     - websecure
@@ -11,7 +15,8 @@ spec:
       kind: Rule
       middlewares:
         - name: traefik-dashboard-basicauth
-          namespace: traefik-v2
       services:
         - name: api@internal
           kind: TraefikService
+  tls:
+    certResolver: default

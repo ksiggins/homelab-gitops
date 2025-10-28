@@ -1,9 +1,10 @@
 apiVersion: v2
 name: traefik
+description: Homelab Traefik ingress controller and dashboard configuration
+type: application
 version: 1.0.0
-
+appVersion: "3.1"
 dependencies:
-- name: traefik
-  version: 22.1.0
-  repository: https://traefik.github.io/charts
-  namespace: traefik-v2
+  - name: traefik
+    version: 37.2.0
+    repository: https://traefik.github.io/charts
