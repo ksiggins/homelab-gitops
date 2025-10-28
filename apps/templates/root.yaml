@@ -2,6 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: root
+  namespace: argocd
   labels:
     app.kubernetes.io/part-of: homelab-gitops
   annotations:
@@ -14,14 +15,17 @@ spec:
     repoURL: https://github.com/ksiggins/homelab-gitops.git
     path: apps
     targetRevision: HEAD
+    directory:
+      recurse: true
   destination:
     name: in-cluster
-    namespace: default
+    namespace: argocd
   syncPolicy:
     syncOptions:
       - Validate=false
       - CreateNamespace=true
       - ApplyOutOfSyncOnly=true
+      - RespectIgnoreDifferences=true
     automated:
       prune: true
       selfHeal: true

@@ -2,6 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: traefik
+  namespace: argocd
   labels:
     app.kubernetes.io/part-of: homelab-gitops
   annotations:
@@ -14,6 +15,9 @@ spec:
     repoURL: https://github.com/ksiggins/homelab-gitops.git
     path: infra/traefik
     targetRevision: HEAD
+    helm:
+      releaseName: traefik
+      skipCrds: false
   destination:
     name: in-cluster
     namespace: traefik-v2
@@ -23,6 +27,7 @@ spec:
       - Validate=false
       - ApplyOutOfSyncOnly=true
       - RespectIgnoreDifferences=true
+      - ServerSideApply=true
     automated:
       prune: true
       selfHeal: true
