@@ -21,4 +21,5 @@ traefik:
     - "--entryPoints.websecure.address=:443"
   ports:
     web:
-      redirectTo: websecure
+      redirectTo:
+        port: websecure
