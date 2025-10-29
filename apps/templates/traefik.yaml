@@ -35,12 +35,12 @@ spec:
           - "--global.checknewversion=false"
           - "--global.sendanonymoususage=false"
         additionalArguments:
-          - "--serversTransport.insecureSkipVerify=true"
+          - "--api=true"
+          - "--api.dashboard=true"
+          - "--api.dashboard.entrypoint=websecure"
           - "--entryPoints.web.address=:80"
           - "--entryPoints.websecure.address=:443"
-          - "--api.dashboard=true"
-          - "--api.insecure=false"
-          - "--api.dashboard.entrypoint=websecure"
+          - "--serversTransport.insecureSkipVerify=true"
         ports:
           web:
             redirections:
