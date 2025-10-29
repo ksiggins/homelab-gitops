@@ -49,13 +49,15 @@ spec:
                 scheme: https
                 permanent: true
           websecure:
-            expose: true
             port: 443
+            expose:
+              default: true
             exposedPort: 443
             protocol: TCP
           traefik:
-            expose: true
             port: 8080
+            expose:
+              default: true
             exposedPort: 8080
             protocol: TCP
   destination:
