@@ -36,7 +36,6 @@ spec:
           - "--global.sendanonymoususage=false"
         additionalArguments:
           - "--api=true"
-          - "--api.dashboard=true"
           - "--api.dashboard.entrypoint=websecure"
           - "--entryPoints.web.address=:80"
           - "--entryPoints.websecure.address=:443"
