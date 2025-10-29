@@ -1,8 +1,8 @@
 apiVersion: metallb.io/v1beta1
 kind: IPAddressPool
 metadata:
-  name: {{ .Values.metallb.poolName }}
-  namespace: {{ .Values.metallb.namespace }}
+  name: local-pool
+  namespace: metallb-system
   annotations:
     argocd.argoproj.io/sync-wave: "1"
   labels:
@@ -13,6 +13,4 @@ metadata:
     app.kubernetes.io/instance: metallb
 spec:
   addresses:
-{{- range .Values.metallb.addressPool }}
-    - "{{ . }}"
-{{- end }}
+    - 192.168.90.100-192.168.90.110

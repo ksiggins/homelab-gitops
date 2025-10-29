@@ -1,3 +1,0 @@
-traefik-crds:
-  fullnameOverride: ""
-  nameOverride: ""

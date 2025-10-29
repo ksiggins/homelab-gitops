@@ -1,8 +1,8 @@
 apiVersion: metallb.io/v1beta1
 kind: L2Advertisement
 metadata:
-  name: {{ .Values.metallb.advertisementName }}
-  namespace: {{ .Values.metallb.namespace }}
+  name: local-adv
+  namespace: metallb-system
   annotations:
     argocd.argoproj.io/sync-wave: "2"
   labels:
@@ -13,4 +13,4 @@ metadata:
     app.kubernetes.io/instance: metallb
 spec:
   ipAddressPools:
-    - {{ .Values.metallb.poolName }}
+    - local-pool

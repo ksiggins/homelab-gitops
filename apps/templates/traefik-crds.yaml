@@ -22,8 +22,6 @@ spec:
     helm:
       releaseName: traefik-crds
       skipCrds: false
-      valueFiles:
-        - manifests/traefik-crds/values.yaml
   destination:
     name: in-cluster
     namespace: traefik-v2

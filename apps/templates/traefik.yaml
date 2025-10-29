@@ -22,8 +22,31 @@ spec:
     helm:
       releaseName: traefik
       skipCrds: true
-      valueFiles:
-        - manifests/traefik/values.yaml
+      values: |
+        fullnameOverride: ""
+        nameOverride: ""
+        deployment:
+          replicas: 3
+        service:
+          enabled: true
+          type: LoadBalancer
+        ingressRoute:
+          dashboard:
+            enabled: false
+        globalArguments:
+          - "--global.checknewversion=false"
+          - "--global.sendanonymoususage=false"
+        additionalArguments:
+          - "--serversTransport.insecureSkipVerify=true"
+          - "--entryPoints.web.address=:80"
+          - "--entryPoints.websecure.address=:443"
+        ports:
+          web:
+            redirections:
+              entryPoint:
+                to: websecure
+                scheme: https
+                permanent: true
   destination:
     name: in-cluster
     namespace: traefik-v2

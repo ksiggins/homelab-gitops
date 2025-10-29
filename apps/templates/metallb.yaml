@@ -22,8 +22,9 @@ spec:
     helm:
       releaseName: metallb
       skipCrds: false
-      valueFiles:
-        - manifests/metallb/values.yaml
+      values: |
+        fullnameOverride: ""
+        nameOverride: ""
   destination:
     name: in-cluster
     namespace: metallb-system
