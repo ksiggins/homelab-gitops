@@ -25,24 +25,12 @@ spec:
       values: |
         deployment:
           replicas: 3
-        service:
-          enabled: true
-          type: LoadBalancer
         ingressRoute:
           dashboard:
             enabled: false
-        api:
-          dashboard: true
-          insecure: false
         globalArguments:
           - "--global.checknewversion=false"
           - "--global.sendanonymoususage=false"
-        additionalArguments:
-          - "--api=true"
-          - "--api.dashboard.entrypoint=websecure"
-          - "--entryPoints.web.address=:80"
-          - "--entryPoints.websecure.address=:443"
-          - "--serversTransport.insecureSkipVerify=true"
         ports:
           web:
             redirections:
@@ -50,12 +38,6 @@ spec:
                 to: websecure
                 scheme: https
                 permanent: true
-          websecure:
-            port: 443
-            expose:
-              default: true
-            exposedPort: 443
-            protocol: TCP
   destination:
     name: in-cluster
     namespace: traefik-v2
