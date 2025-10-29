@@ -1,11 +1,11 @@
 apiVersion: v2
-name: traefik
-description: Homelab Traefik ingress controller and dashboard configuration
+name: traefik-crds
+description: Installs only the Traefik CRDs required for IngressRoute, Middleware, etc.
 type: application
 version: 1.0.0
 appVersion: "3.1"
 
 dependencies:
-  - name: traefik
+  - name: traefik-crds
     version: 37.2.0
     repository: https://traefik.github.io/charts

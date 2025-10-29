@@ -4,7 +4,11 @@ metadata:
   name: traefik
   namespace: argocd
   labels:
+    app.kubernetes.io/name: traefik
+    app.kubernetes.io/component: ingress-controller
     app.kubernetes.io/part-of: homelab-gitops
+    app.kubernetes.io/managed-by: argocd
+    app.kubernetes.io/instance: traefik
   annotations:
     argocd.argoproj.io/sync-wave: "1"
   finalizers:
@@ -17,17 +21,16 @@ spec:
     targetRevision: HEAD
     helm:
       releaseName: traefik
-      skipCrds: false
+      skipCrds: true
   destination:
     name: in-cluster
     namespace: traefik-v2
   syncPolicy:
-    syncOptions:
-      - CreateNamespace=true
-      - Validate=false
-      - ApplyOutOfSyncOnly=true
-      - RespectIgnoreDifferences=true
-      - ServerSideApply=true
     automated:
       prune: true
       selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
+      - ServerSideApply=true
+      - RespectIgnoreDifferences=true
