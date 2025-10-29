@@ -22,9 +22,6 @@ spec:
     helm:
       releaseName: metallb
       skipCrds: false
-      values: |
-        fullnameOverride: ""
-        nameOverride: ""
   destination:
     name: in-cluster
     namespace: metallb-system
