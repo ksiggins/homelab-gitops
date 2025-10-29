@@ -1,6 +1,6 @@
 apiVersion: v2
 name: traefik-crds
-description: Installs only the Traefik CRDs required for IngressRoute, Middleware, etc.
+description: Installs only the Traefik CRDs required for IngressRoute, Middleware, etc
 type: application
 version: 1.0.0
 appVersion: "3.1"

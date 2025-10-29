@@ -1,0 +1,6 @@
+metallb:
+  namespace: metallb-system
+  poolName: local-pool
+  advertisementName: local-adv
+  addressPool:
+    - 192.168.90.100-192.168.90.110

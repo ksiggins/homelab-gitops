@@ -1,6 +1,6 @@
 apiVersion: v2
 name: traefik
-description: Homelab Traefik ingress controller and dashboard configuration
+description: Traefik ingress controller and dashboard configuration
 type: application
 version: 1.0.0
 appVersion: "3.1"

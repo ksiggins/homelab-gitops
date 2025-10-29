@@ -1,6 +1,6 @@
 apiVersion: v2
 name: root
-description: Root ArgoCD application chart for homelab GitOps.
+description: Root ArgoCD application chart for GitOps
 type: application
 version: 1.0.0
 appVersion: "1.0"

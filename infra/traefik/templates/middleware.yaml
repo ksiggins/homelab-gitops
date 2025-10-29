@@ -9,6 +9,8 @@ metadata:
     app.kubernetes.io/name: traefik
     app.kubernetes.io/component: dashboard
     app.kubernetes.io/part-of: homelab-gitops
+    app.kubernetes.io/managed-by: argocd
+    app.kubernetes.io/instance: traefik
 spec:
   basicAuth:
     secret: traefik-dashboard-auth

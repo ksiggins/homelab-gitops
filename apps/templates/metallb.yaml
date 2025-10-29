@@ -1,29 +1,30 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: traefik-crds
+  name: metallb
   namespace: argocd
   labels:
-    app.kubernetes.io/name: traefik-crds
-    app.kubernetes.io/component: crds
+    app.kubernetes.io/name: metallb
+    app.kubernetes.io/component: load-balancer
     app.kubernetes.io/part-of: homelab-gitops
     app.kubernetes.io/managed-by: argocd
-    app.kubernetes.io/instance: traefik
+    app.kubernetes.io/instance: metallb
   annotations:
-    argocd.argoproj.io/sync-wave: "2"
+    argocd.argoproj.io/sync-wave: "1"
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
     repoURL: https://github.com/ksiggins/homelab-gitops.git
-    path: infra/traefik-crds
+    path: infra/metallb
     targetRevision: HEAD
     helm:
-      releaseName: traefik-crds
+      releaseName: metallb
+      skipCrds: false
   destination:
     name: in-cluster
-    namespace: traefik-v2
+    namespace: metallb-system
   syncPolicy:
     automated:
       prune: true
@@ -32,3 +33,4 @@ spec:
       - CreateNamespace=true
       - ApplyOutOfSyncOnly=true
       - ServerSideApply=true
+      - RespectIgnoreDifferences=true
