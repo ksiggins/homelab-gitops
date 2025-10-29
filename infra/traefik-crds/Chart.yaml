@@ -7,5 +7,5 @@ appVersion: "3.1"
 
 dependencies:
   - name: traefik-crds
-    version: 37.2.0
+    version: 1.11.1
     repository: https://traefik.github.io/charts
