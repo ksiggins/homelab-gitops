@@ -4,7 +4,7 @@ metadata:
   name: {{ .Values.metallb.advertisementName }}
   namespace: {{ .Values.metallb.namespace }}
   annotations:
-    argocd.argoproj.io/sync-wave: "0"
+    argocd.argoproj.io/sync-wave: "2"
   labels:
     app.kubernetes.io/name: metallb
     app.kubernetes.io/component: l2advertisement
