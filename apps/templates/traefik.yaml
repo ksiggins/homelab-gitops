@@ -31,6 +31,9 @@ spec:
         ingressRoute:
           dashboard:
             enabled: false
+        api:
+          dashboard: true
+          insecure: false
         globalArguments:
           - "--global.checknewversion=false"
           - "--global.sendanonymoususage=false"

@@ -15,7 +15,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`traefik.local.supermorphic.com`) && (PathPrefix(`/dashboard`) || PathPrefix(`/api`))
+    - match: Host(`traefik.local.supermorphic.com`) && (PathPrefix(`/dashboard/`) || PathPrefix(`/api`))
       kind: Rule
       middlewares:
         - name: traefik-dashboard-basicauth
