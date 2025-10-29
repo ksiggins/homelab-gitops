@@ -3,6 +3,8 @@ kind: Middleware
 metadata:
   name: traefik-dashboard-basicauth
   namespace: {{ .Release.Namespace }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
   labels:
     app.kubernetes.io/name: traefik
     app.kubernetes.io/component: dashboard
