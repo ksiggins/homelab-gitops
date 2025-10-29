@@ -10,17 +10,20 @@ metadata:
     app.kubernetes.io/managed-by: argocd
     app.kubernetes.io/instance: traefik
   annotations:
-    argocd.argoproj.io/sync-wave: "2"
+    argocd.argoproj.io/sync-wave: "3"
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
-    repoURL: https://github.com/ksiggins/homelab-gitops.git
-    path: infra/traefik-crds
-    targetRevision: HEAD
+    repoURL: https://traefik.github.io/charts
+    chart: traefik-crds
+    targetRevision: 1.11.1
     helm:
       releaseName: traefik-crds
+      skipCrds: false
+      valueFiles:
+        - manifests/traefik-crds/values.yaml
   destination:
     name: in-cluster
     namespace: traefik-v2
@@ -32,3 +35,4 @@ spec:
       - CreateNamespace=true
       - ApplyOutOfSyncOnly=true
       - ServerSideApply=true
+      - RespectIgnoreDifferences=true

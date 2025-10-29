@@ -1,35 +1,32 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: root
+  name: traefik-overlay
   namespace: argocd
   labels:
-    app.kubernetes.io/name: root
-    app.kubernetes.io/component: bootstrap
+    app.kubernetes.io/name: traefik-overlay
+    app.kubernetes.io/component: ingress-overlay
     app.kubernetes.io/part-of: homelab-gitops
     app.kubernetes.io/managed-by: argocd
-    app.kubernetes.io/instance: root
+    app.kubernetes.io/instance: traefik
   annotations:
-    argocd.argoproj.io/sync-wave: "0"
+    argocd.argoproj.io/sync-wave: "5"
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
     repoURL: https://github.com/ksiggins/homelab-gitops.git
-    path: apps
+    path: manifests/traefik/overlay
     targetRevision: HEAD
-    directory:
-      recurse: true
   destination:
     name: in-cluster
-    namespace: argocd
+    namespace: traefik-v2
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
-      - Validate=false
       - CreateNamespace=true
       - ApplyOutOfSyncOnly=true
       - ServerSideApply=true

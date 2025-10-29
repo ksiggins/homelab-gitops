@@ -1,8 +1,8 @@
-apiVersion: v1
-kind: Secret
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
 metadata:
-  name: traefik-dashboard-auth
-  namespace: {{ .Release.Namespace }}
+  name: traefik-dashboard-basicauth
+  namespace: {{ .Values.traefik.namespace }}
   annotations:
     argocd.argoproj.io/sync-wave: "1"
   labels:
@@ -11,6 +11,7 @@ metadata:
     app.kubernetes.io/part-of: homelab-gitops
     app.kubernetes.io/managed-by: argocd
     app.kubernetes.io/instance: traefik
-type: Opaque
-data:
-  users: "{{ .Values.dashboard.basicAuth.secret }}"
+spec:
+  basicAuth:
+    secret: traefik-dashboard-auth
+    removeHeader: true

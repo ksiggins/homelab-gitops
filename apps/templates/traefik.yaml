@@ -10,18 +10,20 @@ metadata:
     app.kubernetes.io/managed-by: argocd
     app.kubernetes.io/instance: traefik
   annotations:
-    argocd.argoproj.io/sync-wave: "3"
+    argocd.argoproj.io/sync-wave: "4"
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
-    repoURL: https://github.com/ksiggins/homelab-gitops.git
-    path: infra/traefik
-    targetRevision: HEAD
+    repoURL: https://traefik.github.io/charts
+    chart: traefik
+    targetRevision: 37.2.0
     helm:
       releaseName: traefik
       skipCrds: true
+      valueFiles:
+        - manifests/traefik/values.yaml
   destination:
     name: in-cluster
     namespace: traefik-v2

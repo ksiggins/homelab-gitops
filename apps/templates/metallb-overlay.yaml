@@ -1,35 +1,32 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: root
+  name: metallb-overlay
   namespace: argocd
   labels:
-    app.kubernetes.io/name: root
-    app.kubernetes.io/component: bootstrap
+    app.kubernetes.io/name: metallb-overlay
+    app.kubernetes.io/component: load-balancer-overlay
     app.kubernetes.io/part-of: homelab-gitops
     app.kubernetes.io/managed-by: argocd
-    app.kubernetes.io/instance: root
+    app.kubernetes.io/instance: metallb
   annotations:
-    argocd.argoproj.io/sync-wave: "0"
+    argocd.argoproj.io/sync-wave: "2"
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
     repoURL: https://github.com/ksiggins/homelab-gitops.git
-    path: apps
+    path: manifests/metallb/overlay
     targetRevision: HEAD
-    directory:
-      recurse: true
   destination:
     name: in-cluster
-    namespace: argocd
+    namespace: metallb-system
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
-      - Validate=false
       - CreateNamespace=true
       - ApplyOutOfSyncOnly=true
       - ServerSideApply=true

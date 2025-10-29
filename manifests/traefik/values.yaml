@@ -1,6 +1,7 @@
 traefik:
   fullnameOverride: ""
   nameOverride: ""
+  namespace: traefik-v2
   deployment:
     replicas: 3
   service:
