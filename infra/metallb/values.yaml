@@ -1,7 +1,6 @@
-fullnameOverride: ""
-nameOverride: ""
-
 metallb:
+  fullnameOverride: ""
+  nameOverride: ""
   namespace: metallb-system
   poolName: local-pool
   advertisementName: local-adv

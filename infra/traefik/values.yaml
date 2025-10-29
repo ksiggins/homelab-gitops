@@ -1,12 +1,6 @@
-fullnameOverride: ""
-nameOverride: ""
-
-ingressRoute:
-  domain: traefik.local.supermorphic.com
-dashboard:
-  basicAuth:
-    secret: YWRtaW46JGFwcjEkOXZsSUhPNHkkOXBQZnZmcXQybmhJNi5qbVREdVpKMAoK
 traefik:
+  fullnameOverride: ""
+  nameOverride: ""
   deployment:
     replicas: 3
   service:
@@ -29,3 +23,9 @@ traefik:
           to: websecure
           scheme: https
           permanent: true
+
+ingressRoute:
+  domain: traefik.local.supermorphic.com
+dashboard:
+  basicAuth:
+    secret: YWRtaW46JGFwcjEkOXZsSUhPNHkkOXBQZnZmcXQybmhJNi5qbVREdVpKMAoK
