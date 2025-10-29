@@ -1,3 +1,6 @@
+fullnameOverride: ""
+nameOverride: ""
+
 metallb:
   namespace: metallb-system
   poolName: local-pool
