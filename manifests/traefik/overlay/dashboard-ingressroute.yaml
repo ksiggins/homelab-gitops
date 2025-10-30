@@ -5,6 +5,7 @@ metadata:
   namespace: traefik-v2
   annotations:
     argocd.argoproj.io/sync-wave: "2"
+    cert-manager.io/cluster-issuer: letsencrypt-dns01-production
   labels:
     app.kubernetes.io/name: traefik
     app.kubernetes.io/component: dashboard
@@ -22,3 +23,5 @@ spec:
           kind: TraefikService
       middlewares:
         - name: dashboard-basicauth-middleware
+  tls:
+    secretName: traefik-dashboard-tls

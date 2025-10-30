@@ -19,8 +19,6 @@ spec:
     repoURL: https://github.com/ksiggins/homelab-gitops.git
     path: manifests/cert-manager/issuer
     targetRevision: main
-    directory:
-      recurse: true
   destination:
     name: in-cluster
     namespace: cert-manager
