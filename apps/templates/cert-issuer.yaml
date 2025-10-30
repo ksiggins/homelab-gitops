@@ -1,30 +1,29 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: traefik-crds
+  name: cert-issuer
   namespace: argocd
   labels:
-    app.kubernetes.io/name: traefik-crds
-    app.kubernetes.io/component: crds
+    app.kubernetes.io/name: cert-issuer
+    app.kubernetes.io/component: certificate-issuers
     app.kubernetes.io/part-of: homelab-gitops
     app.kubernetes.io/managed-by: argocd
-    app.kubernetes.io/instance: traefik
+    app.kubernetes.io/instance: cert-issuer
   annotations:
-    argocd.argoproj.io/sync-wave: "30"
+    argocd.argoproj.io/sync-wave: "21"
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
-    repoURL: https://traefik.github.io/charts
-    chart: traefik-crds
-    targetRevision: 1.11.1
-    helm:
-      releaseName: traefik-crds
-      skipCrds: false
+    repoURL: https://github.com/ksiggins/homelab-gitops.git
+    path: manifests/cert-manager/issuer
+    targetRevision: main
+    directory:
+      recurse: true
   destination:
     name: in-cluster
-    namespace: traefik-v2
+    namespace: cert-manager
   syncPolicy:
     automated:
       prune: true
