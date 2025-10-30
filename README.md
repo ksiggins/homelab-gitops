@@ -86,7 +86,7 @@ You should see a `sealed-secrets-controller` pod running.
 Run the following command to generate a sealed version and extract **just the encrypted blob**:
 
 ```bash
-kubectl create secret generic cloudflare-api-token-secret   --namespace cert-manager   --from-literal=api-token='YOUR_REAL_CLOUDFLARE_API_TOKEN'   --dry-run=client -o yaml | kubeseal   --controller-name=sealed-secrets   --controller-namespace=sealed-secrets   --format yaml   --namespace cert-manager | yq '.spec.encryptedData."api-token"'
+kubectl create secret generic cloudflare-secret   --namespace cert-manager   --from-literal=api-token='YOUR_REAL_CLOUDFLARE_API_TOKEN'   --dry-run=client -o yaml | kubeseal   --controller-name=sealed-secrets   --controller-namespace=sealed-secrets   --format yaml   --namespace cert-manager | yq '.spec.encryptedData."api-token"'
 ```
 
 That prints a single encrypted string (safe to store). Copy it.
