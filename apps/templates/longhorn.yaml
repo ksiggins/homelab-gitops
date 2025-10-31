@@ -22,6 +22,8 @@ spec:
     helm:
       releaseName: longhorn
       values: |
+        preUpgradeChecker:
+          jobEnabled: false
         defaultSettings:
           backupTarget: "cifs://192.168.0.3/Longhorn"
           backupTargetCredentialSecret: nas-credential-secret
