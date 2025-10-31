@@ -1,0 +1,20 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: argocd-server-certificate
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+  labels:
+    app.kubernetes.io/name: argocd
+    app.kubernetes.io/component: ui
+    app.kubernetes.io/part-of: homelab-gitops
+    app.kubernetes.io/managed-by: argocd
+    app.kubernetes.io/instance: argocd
+spec:
+  secretName: argocd-server-tls
+  dnsNames:
+    - argocd.local.supermorphic.com
+  issuerRef:
+    name: letsencrypt-dns01-production
+    kind: ClusterIssuer
