@@ -25,7 +25,7 @@ spec:
         defaultSettings:
           backupTarget: "cifs://192.168.0.3/Longhorn"
           backupTargetCredentialSecret: nas-credential-secret
-          snapshotDataIntegrity: true
+          snapshotDataIntegrity: enabled
           backupCompressionMethod: gzip
         longhornManager:
           tolerations:
