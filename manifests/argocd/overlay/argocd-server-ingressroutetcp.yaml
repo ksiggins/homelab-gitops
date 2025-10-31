@@ -1,11 +1,10 @@
 apiVersion: traefik.io/v1alpha1
-kind: IngressRoute
+kind: IngressRouteTCP
 metadata:
   name: argocd-server
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "1"
-    cert-manager.io/cluster-issuer: letsencrypt-dns01-production
   labels:
     app.kubernetes.io/name: argocd
     app.kubernetes.io/component: ui
@@ -16,10 +15,9 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`argocd.local.supermorphic.com`)
-      kind: Rule
+    - match: HostSNI(`argocd.local.supermorphic.com`)
       services:
         - name: argocd-server
-          port: 80
+          port: 443
   tls:
-    secretName: argocd-server-tls
+    passthrough: true
