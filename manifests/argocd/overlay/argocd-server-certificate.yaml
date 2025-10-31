@@ -14,7 +14,7 @@ metadata:
 spec:
   secretName: argocd-server-tls
   dnsNames:
-    - argocd.local.supermorphic.com
+    - argocd.lab.supermorphic.com
   issuerRef:
     name: letsencrypt-dns01-production
     kind: ClusterIssuer

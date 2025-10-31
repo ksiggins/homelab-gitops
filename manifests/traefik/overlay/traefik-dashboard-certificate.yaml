@@ -14,7 +14,7 @@ metadata:
 spec:
   secretName: traefik-dashboard-tls
   dnsNames:
-    - traefik.local.supermorphic.com
+    - traefik.lab.supermorphic.com
   issuerRef:
     name: letsencrypt-dns01-production
     kind: ClusterIssuer

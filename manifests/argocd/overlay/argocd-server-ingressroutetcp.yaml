@@ -15,7 +15,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: HostSNI(`argocd.local.supermorphic.com`)
+    - match: HostSNI(`argocd.lab.supermorphic.com`)
       services:
         - name: argocd-server
           port: 443
