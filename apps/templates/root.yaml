@@ -18,7 +18,7 @@ spec:
   source:
     repoURL: https://github.com/ksiggins/homelab-gitops.git
     path: apps
-    targetRevision: HEAD
+    targetRevision: main
     directory:
       recurse: true
   destination:

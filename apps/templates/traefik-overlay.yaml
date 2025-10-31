@@ -18,7 +18,7 @@ spec:
   source:
     repoURL: https://github.com/ksiggins/homelab-gitops.git
     path: manifests/traefik/overlay
-    targetRevision: HEAD
+    targetRevision: main
   destination:
     name: in-cluster
     namespace: traefik-v2
