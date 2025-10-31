@@ -1,0 +1,49 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: longhorn
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: longhorn
+    app.kubernetes.io/component: storage
+    app.kubernetes.io/part-of: homelab-gitops
+    app.kubernetes.io/managed-by: argocd
+    app.kubernetes.io/instance: longhorn
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://charts.longhorn.io
+    chart: longhorn
+    targetRevision: 1.10.0
+    helm:
+      releaseName: longhorn
+      values: |
+        defaultSettings:
+          backupTarget: "cifs://192.168.0.3/Longhorn"
+          backupTargetCredentialSecret: nas-credential-secret
+          snapshotDataIntegrity: true
+          backupCompressionMethod: gzip
+        longhornManager:
+          tolerations:
+            - effect: NoSchedule
+              operator: Exists
+        metrics:
+          serviceMonitor:
+            enabled: true
+  destination:
+    name: in-cluster
+    namespace: longhorn-system
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
+      - ServerSideApply=true
+      - RespectIgnoreDifferences=true

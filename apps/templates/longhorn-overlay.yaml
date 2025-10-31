@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: longhorn-overlay
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: longhorn-overlay
+    app.kubernetes.io/component: storage
+    app.kubernetes.io/part-of: homelab-gitops
+    app.kubernetes.io/managed-by: argocd
+    app.kubernetes.io/instance: longhorn
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/ksiggins/homelab-gitops.git
+    path: manifests/longhorn/overlay
+    targetRevision: main
+  destination:
+    name: in-cluster
+    namespace: longhorn-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - ApplyOutOfSyncOnly=true
+      - ServerSideApply=true
+      - RespectIgnoreDifferences=true

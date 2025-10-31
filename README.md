@@ -1,5 +1,22 @@
 # Homelab GitOps
 
+## Argo CD Sync-Waves Recap
+
+Application Sync-Wave setup from `apps/templates/`:
+
+| **Sync Wave** | **Application** | **Purpose** | **Notes** |
+|----------------|----------------|--------------|------------|
+| **0** | `root` | Bootstrap “root-of-apps” — registers all sub-applications recursively. | Runs first; sets the stage for everything. |
+| **1** | `sealed-secrets` | Installs Bitnami SealedSecrets controller so future sealed secrets can decrypt. | Must run early because later apps depend on it for secrets. |
+| **2** | `cert-manager` | Installs cert-manager chart (with CRDs skipped, but `skipCrds: true`). | Needed before any app that creates Certificates or Issuers. |
+| **2** | `traefik-crds` | Installs Traefik CRDs (CustomResourceDefinitions). | Needed before `traefik` itself. |
+| **2** | `longhorn` | Installs Longhorn Helm chart and creates the `longhorn-system` namespace. | Belongs in same phase as other infrastructure-level CRD providers. |
+| **3** | `cert-issuer` | Applies ClusterIssuer manifests that rely on cert-manager being available. | Depends on wave 2 `cert-manager`. |
+| **3** | `traefik` | Deploys Traefik Helm chart (needs CRDs ready). | Depends on wave 2 `traefik-crds`. |
+| **4** | `argocd-overlay` | Adds extra manifests (IngressRouteTCP, TLS certs) to the ArgoCD deployment. | Depends on certs + Traefik. |
+| **4** | `traefik-overlay` | Adds dashboard IngressRoute, TLS, auth secret. | Depends on cert-manager + Traefik. |
+| **5** | `longhorn-overlay` | Adds sealed NAS credentials, recurring jobs, and ingress for Longhorn UI. | Depends on base Longhorn being deployed (wave 2). |
+
 ## Sealed Secrets Setup
 
 This guide describes how to install the **Bitnami Sealed Secrets controller** using Argo CD and how to securely manage Kubernetes Secrets in GitOps style using the `kubeseal` CLI.

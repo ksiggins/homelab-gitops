@@ -1,0 +1,20 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: longhorn-dashboard-certificate
+  namespace: longhorn-system
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+  labels:
+    app.kubernetes.io/name: longhorn
+    app.kubernetes.io/component: dashboard
+    app.kubernetes.io/part-of: homelab-gitops
+    app.kubernetes.io/managed-by: argocd
+    app.kubernetes.io/instance: longhorn
+spec:
+  secretName: longhorn-dashboard-tls
+  dnsNames:
+    - longhorn.lab.supermorphic.com
+  issuerRef:
+    name: letsencrypt-dns01-production
+    kind: ClusterIssuer
