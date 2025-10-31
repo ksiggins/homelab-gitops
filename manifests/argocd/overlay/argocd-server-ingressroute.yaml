@@ -20,6 +20,7 @@ spec:
       kind: Rule
       services:
         - name: argocd-server
-          kind: Service
+          port: 8080
+          scheme: https
   tls:
     secretName: argocd-server-tls
