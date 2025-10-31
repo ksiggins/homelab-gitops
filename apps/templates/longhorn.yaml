@@ -33,7 +33,7 @@ spec:
               operator: Exists
         metrics:
           serviceMonitor:
-            enabled: true
+            enabled: false
   destination:
     name: in-cluster
     namespace: longhorn-system
