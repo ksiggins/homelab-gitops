@@ -24,7 +24,10 @@ spec:
         valueFiles:
           - $values/manifests/kube-prometheus-stack/values.yaml
     - repoURL: https://github.com/ksiggins/homelab-gitops.git
-      path: manifests/kube-prometheus-stack
+      targetRevision: main
+      ref: values
+    - repoURL: https://github.com/ksiggins/homelab-gitops.git
+      path: manifests/kube-prometheus-stack/overlay
       targetRevision: main
   destination:
     name: in-cluster
