@@ -21,13 +21,11 @@ spec:
       targetRevision: 79.1.0
       helm:
         releaseName: kube-prometheus-stack
-        skipCrds: false
         valueFiles:
           - $values/manifests/kube-prometheus-stack/values.yaml
     - repoURL: https://github.com/ksiggins/homelab-gitops.git
-      targetRevision: main
-      ref: values
       path: manifests/kube-prometheus-stack
+      targetRevision: main
   destination:
     name: in-cluster
     namespace: monitoring
