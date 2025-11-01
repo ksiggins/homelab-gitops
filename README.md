@@ -29,12 +29,11 @@ Application Sync-Wave setup from `apps/templates/`:
 - **Wave 3 →** Dependent apps (Ingress, Monitoring, CertIssuer).
 - **Wave 4–5 →** Overlays and UI extensions.
 - The order guarantees reproducible GitOps bootstrapping from a blank cluster, even when using multi-source Applications.
-
 ## Sealed Secrets Setup
 
-This guide describes how to install the **Bitnami Sealed Secrets controller** using Argo CD and how to securely manage Kubernetes Secrets in GitOps style using the `kubeseal` CLI.
+This guide explains how to install the **Bitnami Sealed Secrets controller** using Argo CD and securely manage Kubernetes Secrets in GitOps style using the helper script `scripts/seal_secret.sh`.
 
-### 1. Install `kubeseal` CLI
+### 1. Install the `kubeseal` CLI
 
 On **macOS**, install via Homebrew:
 
@@ -42,25 +41,25 @@ On **macOS**, install via Homebrew:
 brew install kubeseal
 ```
 
-Verify:
+Verify installation:
 
 ```bash
 kubeseal --version
 ```
 
-You should see something like:
+You should see output similar to:
 
 ```
 kubeseal version: v0.27.0
 ```
 
-> The CLI communicates with the Sealed-Secrets controller in your cluster to encrypt plaintext Secrets into SealedSecrets.
+> The `kubeseal` CLI encrypts plaintext Kubernetes Secrets into SealedSecrets that can only be decrypted by the controller running in your cluster.
 
-### 2. Deploy the Sealed-Secrets Controller with Argo CD
+### 2. Deploy the Sealed-Secrets Controller via Argo CD
 
-The controller manages encryption and decryption of Secrets within your cluster.
+The controller manages encryption and decryption of all SealedSecrets in your cluster.
 
-Create the Argo CD Application `apps/templates/sealed-secrets.yaml` as follows:
+Create the following Argo CD Application under `apps/templates/sealed-secrets.yaml`:
 
 ```yaml
 apiVersion: argoproj.io/v1alpha1
@@ -75,7 +74,7 @@ metadata:
     app.kubernetes.io/managed-by: argocd
     app.kubernetes.io/instance: sealed-secrets
   annotations:
-    argocd.argoproj.io/sync-wave: "10"
+    argocd.argoproj.io/sync-wave: "1"
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
@@ -100,76 +99,98 @@ spec:
       - RespectIgnoreDifferences=true
 ```
 
-Commit this to Git.
-When Argo CD syncs, it installs the Sealed-Secrets controller and CRDs into the cluster.
+Commit this file and allow Argo CD to sync — it will install the controller and CRDs automatically.
 
-Validate:
+Validate the installation:
 
 ```bash
 kubectl get pods -n sealed-secrets
 ```
 
-You should see a `sealed-secrets-controller` pod running.
+You should see a running `sealed-secrets-controller` pod.
 
-### 3. Encrypt the Secret Using `kubeseal`
+### 3. Generate Encrypted Secrets with the Helper Script
 
-Run the following command to generate a sealed version and extract **just the encrypted blob**:
+Use the helper script to easily encrypt key/value pairs into SealedSecret data.
 
 ```bash
-kubectl create secret generic cloudflare-secret   --namespace cert-manager   --from-literal=api-token='YOUR_REAL_CLOUDFLARE_API_TOKEN'   --dry-run=client -o yaml | kubeseal   --controller-name=sealed-secrets   --controller-namespace=sealed-secrets   --format yaml   --namespace cert-manager | yq '.spec.encryptedData."api-token"'
+scripts/seal_secret.sh <namespace> key1=value1 [key2=value2 ...]
 ```
 
-That prints a single encrypted string (safe to store). Copy it.
+Examples:
 
-### 4. Create a SealedSecret File
-
-Now create your sealed version under:
-
-```
-manifests/cert-manager/issuer/cloudflare-api-token.yaml
+```bash
+./scripts/seal_secret.sh cert-manager api-token='YOUR_CLOUDFLARE_TOKEN'
 ```
 
-Example:
+or multiple keys:
+
+```bash
+./scripts/seal_secret.sh monitoring admin-user=admin admin-password='S3cr3t!'
+```
+
+The script automatically detects the Sealed-Secrets controller, contacts it for the public key, and encrypts your values locally.
+It works even if the target namespace doesn’t yet exist.
+
+Sample output:
+
+```
+# Copy the below lines into your SealedSecret under spec.encryptedData
+
+    admin-user: AgBYQiXkvi3YYp1hEa5NnC2OFQYUpJfllG+ziQNWmo1tBdmLB...
+    admin-password: AgAQGmqNpRovRD7zPu5mST51KE5B98mTQQt1yQVybZ9suv...
+```
+
+Copy each encrypted key into your SealedSecret manifest, under `spec.encryptedData`.
+
+### 4. Create the SealedSecret Manifest
+
+Save your encrypted data under the appropriate path, for example:
+
+```
+manifests/cert-manager/issuer/cloudflare-secret.yaml
+```
 
 ```yaml
 apiVersion: bitnami.com/v1alpha1
 kind: SealedSecret
 metadata:
-  name: cloudflare-api-token-secret
+  name: cloudflare-secret
   namespace: cert-manager
   annotations:
-    argocd.argoproj.io/sync-wave: "10"
+    argocd.argoproj.io/sync-wave: "1"
   labels:
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/component: cloudflare-dns-token
+    app.kubernetes.io/component: dns-credentials
     app.kubernetes.io/part-of: homelab-gitops
     app.kubernetes.io/managed-by: argocd
     app.kubernetes.io/instance: cert-manager
 spec:
   encryptedData:
-    api-token: <PASTE_YOUR_ENCRYPTED_BLOB_HERE>
+    api-token: <PASTE_ENCRYPTED_BLOB_HERE>
 ```
 
 Commit and push this file — it’s safe to store encrypted secrets in Git.
 
-### 5. Validate Decryption in Cluster
+### 5. Verify Secret Decryption in Cluster
 
-After Argo CD syncs, the Sealed-Secrets controller will automatically decrypt and create a normal Kubernetes Secret inside the `cert-manager` namespace.
+After Argo CD syncs, the Sealed-Secrets controller automatically decrypts and creates a native Kubernetes Secret in the target namespace.
 
 Verify:
 
 ```bash
 kubectl get sealedsecret -n cert-manager
-kubectl get secret cloudflare-api-token-secret -n cert-manager
+kubectl get secret cloudflare-secret -n cert-manager
 ```
 
-If both exist, the process worked.
-You now have a fully GitOps-safe secret management flow.
+If both resources exist, the process is working correctly.
 
-### 8. Rotate or Update a Secret
+### 6. Rotate or Update Secrets
 
-When you need to change the token:
+To update credentials:
 
-1. Re-run the `kubeseal` command to generate a new encrypted blob.
-2. Replace the value in your committed `SealedSecret` file.
-3. Commit + push → Argo CD syncs → Secret automatically rotated in-cluster.
+1. Re-run the helper script with updated values.
+2. Replace the encrypted strings in your committed `SealedSecret` file.
+3. Commit and push — Argo CD syncs and the Secret is automatically updated in the cluster.
+
+Your GitOps environment now supports fully encrypted secret management with zero plaintext exposure.
