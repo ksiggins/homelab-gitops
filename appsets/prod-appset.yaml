@@ -17,13 +17,6 @@ spec:
   template:
     metadata:
       name: '{{index .path.segments 1}}-{{index .path.segments 3}}'
-      annotations:
-        argocd.argoproj.io/sync-wave: >
-          {{- if eq (index .path.segments 1) "cert-manager" -}}1
-          {{- else if eq (index .path.segments 1) "traefik" -}}2
-          {{- else if eq (index .path.segments 1) "longhorn" -}}3
-          {{- else -}}4
-          {{- end -}}
       labels:
         env: prod
         app.kubernetes.io/part-of: homelab-gitops

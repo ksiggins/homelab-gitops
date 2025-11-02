@@ -17,11 +17,6 @@ spec:
   template:
     metadata:
       name: '{{index .path.segments 1}}'
-      annotations:
-        argocd.argoproj.io/sync-wave: >
-          {{- if eq (index .path.segments 1) "sealed-secrets" -}}1
-          {{- else -}}2
-          {{- end -}}
       labels:
         env: infra
         app.kubernetes.io/part-of: homelab-gitops
