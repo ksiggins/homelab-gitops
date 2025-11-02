@@ -26,8 +26,6 @@ spec:
         repoURL: https://github.com/ksiggins/homelab-gitops.git
         targetRevision: appsets
         path: '{{.path.path}}'
-        kustomize:
-          buildOptions: "--enable-helm"
       destination:
         server: https://kubernetes.default.svc
       syncPolicy:
