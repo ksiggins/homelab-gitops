@@ -1,0 +1,18 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: longhorn-dashboard
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+    cert-manager.io/cluster-issuer: letsencrypt-dns01-staging
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`longhorn-staging.lab.supermorphic.com`)
+      kind: Rule
+      services:
+        - name: longhorn-frontend
+          port: 80
+  tls:
+    secretName: longhorn-dashboard-tls

@@ -1,0 +1,10 @@
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: dashboard-basicauth
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+spec:
+  basicAuth:
+    secret: dashboard-auth
+    removeHeader: true

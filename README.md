@@ -1,34 +1,27 @@
 # Homelab GitOps
 
-## Argo CD Sync-Waves Recap
+## Argo CD Sync-Waves
 
-Application Sync-Wave setup from `apps/templates/`:
+| **Sync Wave** | **Level** | **Application** | **Environments** | **Purpose / Dependencies** |
+|----------------|-----------|------------------|------------------|-----------------------------|
+| **0** | Root | `root` | — | Bootstraps all `infra`, `staging`, and `prod` ApplicationSets. Initializes structure and triggers recursive syncs. |
+| **1** | Infra | `sealed-secrets` | — | Installs Bitnami Sealed Secrets controller. Required for decrypting all sealed secrets across environments. |
+| **2** | Infra | `cert-manager` | — | Installs cert-manager (with CRDs) for automated certificate management. Required by all TLS-enabled apps. |
+| **2** | Infra | `longhorn` | — | Deploys Longhorn distributed storage and backup services. Independent of cert-manager. |
+| **3** | Component | `cert-manager` | prod, staging | Deploys environment-specific `ClusterIssuer` and Cloudflare DNS API secret. Depends on base `cert-manager`. |
+| **4** | Component | `traefik` | prod, staging | Deploys dashboard `IngressRoute`, middleware, auth secret, and certificate. Depends on `cert-manager` and base `traefik`. |
+| **5** | Component | `longhorn` | prod, staging | Deploys Longhorn UI `IngressRoute` and TLS certificate. Depends on `cert-manager` and base `traefik`. |
 
-| **Sync Wave** | **Application** | **Deployment Pattern** | **Purpose** | **Notes** |
-|----------------|----------------|-------------------------|--------------|------------|
-| **0** | `root` | **Git** | Bootstrap “root-of-apps” — registers all sub-applications recursively. | Runs first; sets the stage for everything. |
-| **1** | `sealed-secrets` | **Helm** | Installs Bitnami SealedSecrets controller so future sealed secrets can decrypt. | Must run early because later apps depend on it for secrets. |
-| **2** | `cert-manager` | **Helm** | Installs cert-manager chart (`skipCrds: true`). | Needed before any app that creates Certificates or Issuers. |
-| **2** | `traefik-crds` | **Git** | Installs Traefik CRDs (CustomResourceDefinitions). | Required before deploying `traefik`. |
-| **2** | `longhorn` | **Helm** | Installs Longhorn chart and creates the `longhorn-system` namespace. | Provides distributed storage for PVCs and backups. |
-| **3** | `cert-issuer` | **Git** | Applies `ClusterIssuer` manifests that rely on cert-manager. | Depends on wave 2 `cert-manager`. |
-| **3** | `traefik` | **Helm** | Deploys Traefik Helm chart (uses CRDs from wave 2). | Provides ingress controller for later apps. |
-| **3** | `kube-prometheus-stack` | **Multi-source** | Deploys Prometheus, Alertmanager, and Grafana stack using Helm, plus Namespace, SealedSecret, Certificate, and IngressRoute manifests via Git. | Depends on Longhorn (storage) and cert-manager (TLS). |
-| **4** | `argocd-overlay` | **Git** | Adds extra manifests (IngressRouteTCP, TLS certs) to the Argo CD deployment. | Depends on certs + Traefik. |
-| **4** | `traefik-overlay` | **Git** | Adds Traefik dashboard IngressRoute, TLS certificate, and auth secret. | Depends on cert-manager + Traefik. |
-| **5** | `longhorn-overlay` | **Git** | Adds sealed NAS credentials, recurring jobs, and ingress for Longhorn UI. | Depends on base Longhorn being deployed (wave 2). |
+### Sync-Wave Summary
 
-### Deployment Pattern Legend
+- **Wave 1 →** Deploys encryption foundation (`sealed-secrets`).
+- **Wave 2 →** Establishes core infrastructure: certificate management (`cert-manager`) and storage (`longhorn`).
+- **Wave 3 →** Configures environment-specific issuers and secrets for `cert-manager`.
+- **Wave 4 →** Deploys ingress controller configuration and certificates for `traefik`.
+- **Wave 5 →** Deploys UI ingress and TLS configuration for `longhorn`.
 
-- **Helm (repo):** Pulls chart directly from an external Helm repository (e.g., Jetstack, Prometheus Community).
-- **Git (manifests):** Applies static or templated manifests (e.g., overlay, CRDs, or Issuers).
-- **Multi-source (Helm + Git):** Combines Helm chart with overlay manifests (Namespace, Secrets, Ingress, Certs).
+This represents your **exact current stack**, deployed deterministically through the `root → infra → env` ApplicationSet chain.
 
-### Sync-Waves
-- **Wave 2 →** Core infrastructure (CRDs, certs, storage).
-- **Wave 3 →** Dependent apps (Ingress, Monitoring, CertIssuer).
-- **Wave 4–5 →** Overlays and UI extensions.
-- The order guarantees reproducible GitOps bootstrapping from a blank cluster, even when using multi-source Applications.
 ## Sealed Secrets Setup
 
 This guide explains how to install the **Bitnami Sealed Secrets controller** using Argo CD and securely manage Kubernetes Secrets in GitOps style using the helper script `scripts/seal_secret.sh`.

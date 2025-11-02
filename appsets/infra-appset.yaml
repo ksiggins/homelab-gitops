@@ -1,0 +1,45 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: infra-appset
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+    - git:
+        repoURL: https://github.com/ksiggins/homelab-gitops.git
+        revision: appsets
+        directories:
+          - path: infra/*
+  template:
+    metadata:
+      name: '{{index .path.segments 1}}'
+      annotations:
+        argocd.argoproj.io/sync-wave: >
+          {{- if eq (index .path.segments 1) "sealed-secrets" -}}1
+          {{- else -}}2
+          {{- end -}}
+      labels:
+        env: infra
+        app.kubernetes.io/part-of: homelab-gitops
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/ksiggins/homelab-gitops.git
+        targetRevision: appsets
+        path: '{{.path.path}}'
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: '{{index .path.segments 1}}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+          - ApplyOutOfSyncOnly=true
+          - ServerSideApply=true
+          - RespectIgnoreDifferences=true

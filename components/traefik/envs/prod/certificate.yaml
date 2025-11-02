@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: traefik-dashboard
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+spec:
+  secretName: traefik-dashboard-tls
+  dnsNames:
+    - traefik.lab.supermorphic.com
+  issuerRef:
+    name: letsencrypt-dns01-production
+    kind: ClusterIssuer
