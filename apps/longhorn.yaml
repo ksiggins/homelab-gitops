@@ -3,16 +3,8 @@ kind: Application
 metadata:
   name: longhorn
   namespace: argocd
-  labels:
-    app.kubernetes.io/name: longhorn
-    app.kubernetes.io/component: storage
-    app.kubernetes.io/part-of: homelab-gitops
-    app.kubernetes.io/managed-by: argocd
-    app.kubernetes.io/instance: longhorn
   annotations:
     argocd.argoproj.io/sync-wave: "2"
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
@@ -37,15 +29,11 @@ spec:
           serviceMonitor:
             enabled: false
   destination:
-    name: in-cluster
+    name: https://kubernetes.default.svc
     namespace: longhorn-system
-
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
-      - ApplyOutOfSyncOnly=true
-      - ServerSideApply=true
-      - RespectIgnoreDifferences=true

@@ -3,16 +3,8 @@ kind: Application
 metadata:
   name: cert-manager
   namespace: argocd
-  labels:
-    app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/component: certificate-controller
-    app.kubernetes.io/part-of: homelab-gitops
-    app.kubernetes.io/managed-by: argocd
-    app.kubernetes.io/instance: cert-manager
   annotations:
     argocd.argoproj.io/sync-wave: "2"
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
@@ -29,7 +21,7 @@ spec:
           - --dns01-recursive-nameservers-only
           - --dns01-recursive-nameservers=1.1.1.1:53,1.0.0.1:53
   destination:
-    name: in-cluster
+    name: https://kubernetes.default.svc
     namespace: cert-manager
   syncPolicy:
     automated:
@@ -37,6 +29,3 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
-      - ApplyOutOfSyncOnly=true
-      - ServerSideApply=true
-      - RespectIgnoreDifferences=true
