@@ -29,7 +29,7 @@ spec:
           serviceMonitor:
             enabled: false
   destination:
-    name: https://kubernetes.default.svc
+    name: in-cluster
     namespace: longhorn-system
   syncPolicy:
     automated:

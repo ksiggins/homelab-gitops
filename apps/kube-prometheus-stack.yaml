@@ -22,7 +22,7 @@ spec:
       targetRevision: main
       path: manifests/kube-prometheus-stack/overlay
   destination:
-    name: https://kubernetes.default.svc
+    name: in-cluster
     namespace: monitoring
   syncPolicy:
     automated:

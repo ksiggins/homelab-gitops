@@ -31,7 +31,7 @@ spec:
                 scheme: https
                 permanent: true
   destination:
-    name: https://kubernetes.default.svc
+    name: in-cluster
     namespace: traefik-v2
   syncPolicy:
     automated:

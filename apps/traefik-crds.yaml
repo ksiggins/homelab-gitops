@@ -15,7 +15,7 @@ spec:
       releaseName: traefik-crds
       skipCrds: false
   destination:
-    name: https://kubernetes.default.svc
+    name: in-cluster
     namespace: traefik-v2
   syncPolicy:
     automated:

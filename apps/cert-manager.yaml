@@ -21,7 +21,7 @@ spec:
           - --dns01-recursive-nameservers-only
           - --dns01-recursive-nameservers=1.1.1.1:53,1.0.0.1:53
   destination:
-    name: https://kubernetes.default.svc
+    name: in-cluster
     namespace: cert-manager
   syncPolicy:
     automated:

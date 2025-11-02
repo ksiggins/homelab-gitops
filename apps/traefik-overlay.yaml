@@ -12,7 +12,7 @@ spec:
     targetRevision: main
     path: manifests/traefik/overlay
   destination:
-    name: https://kubernetes.default.svc
+    name: in-cluster
     namespace: traefik-v2
   syncPolicy:
     automated:

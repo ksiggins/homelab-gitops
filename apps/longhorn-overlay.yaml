@@ -12,7 +12,7 @@ spec:
     targetRevision: main
     path: manifests/longhorn/overlay
   destination:
-    name: https://kubernetes.default.svc
+    name: in-cluster
     namespace: longhorn-system
   syncPolicy:
     automated:
