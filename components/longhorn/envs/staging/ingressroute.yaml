@@ -9,7 +9,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`longhorn-staging.lab.supermorphic.com`)
+    - match: Host(`longhorn.staging.lab.supermorphic.com`)
       kind: Rule
       services:
         - name: longhorn-frontend

@@ -7,7 +7,7 @@ metadata:
 spec:
   secretName: longhorn-dashboard-tls
   dnsNames:
-    - longhorn-staging.lab.supermorphic.com
+    - longhorn.staging.lab.supermorphic.com
   issuerRef:
     name: letsencrypt-dns01-staging
     kind: ClusterIssuer
