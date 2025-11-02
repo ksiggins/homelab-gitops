@@ -13,6 +13,7 @@ spec:
       targetRevision: 79.1.0
       helm:
         releaseName: kube-prometheus-stack
+        skipCrds: false
         valueFiles:
           - $values/manifests/kube-prometheus-stack/values.yaml
     - repoURL: https://github.com/ksiggins/homelab-gitops.git
