@@ -16,7 +16,7 @@ spec:
           - path: infra/*
   template:
     metadata:
-      name: '{{index .path.segments 1}}'
+      name: '{{`{{ index .path.segments 1 }}`}}'
       labels:
         env: infra
         app.kubernetes.io/part-of: homelab-gitops
@@ -25,7 +25,7 @@ spec:
       source:
         repoURL: https://github.com/ksiggins/homelab-gitops.git
         targetRevision: appsets
-        path: '{{.path.path}}'
+        path: '{{`{{ .path.path }}`}}'
       destination:
         server: in-cluster
       syncPolicy:
@@ -34,3 +34,6 @@ spec:
           selfHeal: true
         syncOptions:
           - CreateNamespace=true
+          - ApplyOutOfSyncOnly=true
+          - ServerSideApply=true
+          - RespectIgnoreDifferences=true

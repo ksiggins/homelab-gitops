@@ -3,12 +3,18 @@ kind: Application
 metadata:
   name: root
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
     repoURL: https://github.com/ksiggins/homelab-gitops.git
     targetRevision: appsets
     path: appsets
+    directory:
+      recurse: true
   destination:
     server: in-cluster
     namespace: argocd
@@ -17,4 +23,8 @@ spec:
       prune: true
       selfHeal: true
     syncOptions:
+      - Validate=false
       - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
+      - ServerSideApply=true
+      - RespectIgnoreDifferences=true
