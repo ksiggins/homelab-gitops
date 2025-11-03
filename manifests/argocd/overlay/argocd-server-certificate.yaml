@@ -3,8 +3,6 @@ kind: Certificate
 metadata:
   name: argocd-server-certificate
   namespace: argocd
-  annotations:
-    argocd.argoproj.io/sync-wave: "0"
 spec:
   secretName: argocd-server-tls
   dnsNames:

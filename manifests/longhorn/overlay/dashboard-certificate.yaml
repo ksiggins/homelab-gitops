@@ -3,8 +3,6 @@ kind: Certificate
 metadata:
   name: longhorn-dashboard-certificate
   namespace: longhorn-system
-  annotations:
-    argocd.argoproj.io/sync-wave: "1"
 spec:
   secretName: longhorn-dashboard-tls
   dnsNames:

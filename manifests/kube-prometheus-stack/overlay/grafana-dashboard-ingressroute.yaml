@@ -4,7 +4,6 @@ metadata:
   name: grafana-dashboard
   namespace: monitoring
   annotations:
-    argocd.argoproj.io/sync-wave: "4"
     cert-manager.io/cluster-issuer: letsencrypt-dns01-production
 spec:
   entryPoints:
