@@ -77,7 +77,7 @@ spec:
     helm:
       releaseName: sealed-secrets
   destination:
-    name: in-cluster
+    name: https://kubernetes.default.svc
     namespace: sealed-secrets
   syncPolicy:
     automated:

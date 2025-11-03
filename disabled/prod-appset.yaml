@@ -27,7 +27,7 @@ spec:
         targetRevision: appsets
         path: '{{.path.path}}'
       destination:
-        server: in-cluster
+        server: https://kubernetes.default.svc
         namespace: '{{index .path.segments 1}}-{{index .path.segments 3}}'
       syncPolicy:
         automated:

@@ -27,7 +27,7 @@ spec:
         targetRevision: appsets
         path: '{{`{{ .path.path }}`}}'
       destination:
-        server: in-cluster
+        server: https://kubernetes.default.svc
       syncPolicy:
         automated:
           prune: true
