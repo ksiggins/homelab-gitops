@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: infra-appset
+  name: prod-appset
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "1"
@@ -13,27 +13,26 @@ spec:
         repoURL: https://github.com/ksiggins/homelab-gitops.git
         revision: appsets
         directories:
-          - path: infra/*
+          - path: components/*/overlays/prod
   template:
     metadata:
-      name: '{{`{{ index .path.segments 1 }}`}}'
+      name: '{{index .path.segments 1}}-{{index .path.segments 3}}'
       labels:
-        env: infra
+        env: prod
         app.kubernetes.io/part-of: homelab-gitops
     spec:
       project: default
       source:
         repoURL: https://github.com/ksiggins/homelab-gitops.git
         targetRevision: appsets
-        path: '{{`{{ .path.path }}`}}'
+        path: '{{.path.path}}'
       destination:
         server: https://kubernetes.default.svc
+        namespace: '{{index .path.segments 1}}-{{index .path.segments 3}}'
       syncPolicy:
         automated:
           prune: true
           selfHeal: true
         syncOptions:
           - CreateNamespace=true
-          - ApplyOutOfSyncOnly=true
           - ServerSideApply=true
-          - RespectIgnoreDifferences=true

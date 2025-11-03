@@ -4,7 +4,7 @@ metadata:
   name: staging-appset
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "2"
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   goTemplate: true
   goTemplateOptions: ["missingkey=error"]
@@ -13,7 +13,7 @@ spec:
         repoURL: https://github.com/ksiggins/homelab-gitops.git
         revision: appsets
         directories:
-          - path: components/*/envs/staging
+          - path: components/*/overlays/staging
   template:
     metadata:
       name: '{{index .path.segments 1}}-{{index .path.segments 3}}'
