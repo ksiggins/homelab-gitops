@@ -29,6 +29,27 @@ Application Sync-Wave setup from `apps/templates/`:
 - **Wave 3 →** Dependent apps (Ingress, Monitoring, CertIssuer).
 - **Wave 4–5 →** Overlays and UI extensions.
 - The order guarantees reproducible GitOps bootstrapping from a blank cluster, even when using multi-source Applications.
+
+## Why we enabled `ServerSideApply=true` for kube-prometheus-stack
+
+When deploying the **kube-prometheus-stack** Helm chart through Argo CD, we hit persistent `metadata.annotations: Too long` errors and “OutOfSync” states caused by the chart’s very large CustomResourceDefinitions (CRDs).
+
+By default, Argo CD performs **client-side apply**, which stores a full `kubectl.kubernetes.io/last-applied-configuration` annotation for every managed resource.
+The Prometheus Operator CRDs in this chart are massive — often several hundred kilobytes — and this annotation alone exceeds Kubernetes’ 256 KB metadata size limit.
+
+Enabling **server-side apply** fixes this by instructing Argo CD to apply manifests directly on the Kubernetes API server, without embedding the large “last-applied” annotation.
+This keeps Argo CD in sync and allows all kube-prometheus-stack CRDs and resources to apply successfully.
+
+```yaml
+syncOptions:
+  - ServerSideApply=true
+```
+
+In short, ServerSideApply=true prevents annotation bloat and resolves sync failures for large CRDs managed by the Prometheus Operator.
+
+Reference:
+https://blog.ediri.io/kube-prometheus-stack-and-argocd-25-server-side-apply-to-the-rescue
+
 ## Sealed Secrets Setup
 
 This guide explains how to install the **Bitnami Sealed Secrets controller** using Argo CD and securely manage Kubernetes Secrets in GitOps style using the helper script `scripts/seal_secret.sh`.
