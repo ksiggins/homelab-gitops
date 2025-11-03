@@ -5,20 +5,18 @@
 | **Sync Wave** | **Level** | **Application** | **Environments** | **Purpose / Dependencies** |
 |----------------|-----------|------------------|------------------|-----------------------------|
 | **0** | Root | `root` | — | Bootstraps all `infra`, `staging`, and `prod` ApplicationSets. Initializes structure and triggers recursive syncs. |
-| **1** | Infra | `sealed-secrets` | — | Installs Bitnami Sealed Secrets controller. Required for decrypting all sealed secrets across environments. |
-| **2** | Infra | `cert-manager` | — | Installs cert-manager (with CRDs) for automated certificate management. Required by all TLS-enabled apps. |
-| **2** | Infra | `longhorn` | — | Deploys Longhorn distributed storage and backup services. Independent of cert-manager. |
-| **3** | Component | `cert-manager` | prod, staging | Deploys environment-specific `ClusterIssuer` and Cloudflare DNS API secret. Depends on base `cert-manager`. |
-| **4** | Component | `traefik` | prod, staging | Deploys dashboard `IngressRoute`, middleware, auth secret, and certificate. Depends on `cert-manager` and base `traefik`. |
-| **5** | Component | `longhorn` | prod, staging | Deploys Longhorn UI `IngressRoute` and TLS certificate. Depends on `cert-manager` and base `traefik`. |
+| **1** | Infra | `cert-manager` | — | Installs cert-manager (with CRDs) for automated certificate management. Required by all TLS-enabled apps. |
+| **1** | Infra | `longhorn` | — | Deploys Longhorn distributed storage and backup services. Independent of cert-manager. |
+| **2** | Component | `cert-manager` | prod, staging | Deploys environment-specific `ClusterIssuer` and Cloudflare DNS API secret. Depends on base `cert-manager`. |
+| **3** | Component | `traefik` | prod, staging | Deploys dashboard `IngressRoute`, middleware, auth secret, and certificate. Depends on `cert-manager` and base `traefik`. |
+| **4** | Component | `longhorn` | prod, staging | Deploys Longhorn UI `IngressRoute` and TLS certificate. Depends on `cert-manager` and base `traefik`. |
 
 ### Sync-Wave Summary
 
-- **Wave 1 →** Deploys encryption foundation (`sealed-secrets`).
-- **Wave 2 →** Establishes core infrastructure: certificate management (`cert-manager`) and storage (`longhorn`).
-- **Wave 3 →** Configures environment-specific issuers and secrets for `cert-manager`.
-- **Wave 4 →** Deploys ingress controller configuration and certificates for `traefik`.
-- **Wave 5 →** Deploys UI ingress and TLS configuration for `longhorn`.
+- **Wave 1 →** Establishes core infrastructure: certificate management (`cert-manager`) and storage (`longhorn`).
+- **Wave 2 →** Configures environment-specific issuers and secrets for `cert-manager`.
+- **Wave 3 →** Deploys ingress controller configuration and certificates for `traefik`.
+- **Wave 4 →** Deploys UI ingress and TLS configuration for `longhorn`.
 
 This represents your **exact current stack**, deployed deterministically through the `root → infra → env` ApplicationSet chain.
 
