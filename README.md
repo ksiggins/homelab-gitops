@@ -1,5 +1,45 @@
 # Homelab GitOps
 
+## Using Argo CD CLI
+
+This section explains how to perform the most common Argo CD setup operations directly from the command line — equivalent to what you would normally do through the Argo CD web UI.
+
+### 1. Log in to your Argo CD server
+
+Use the `argocd login` command to authenticate against your Argo CD API server.
+Replace `<YOUR_USERNAME>` and `<YOUR_PASSWORD>` with your credentials.
+
+```bash
+argocd login 192.168.90.100 --username <YOUR_USERNAME> --password <YOUR_PASSWORD> --insecure
+```
+
+> The `--insecure` flag is required if your Argo CD server is using a self-signed certificate.
+
+### 2. Connect your Git repository
+
+Register your Git repository with Argo CD so it can sync and deploy manifests directly from source control:
+
+```bash
+argocd repo add https://github.com/ksiggins/homelab-gitops.git
+```
+
+After running this command, Argo CD will store credentials (if necessary) and allow the repository to be used by Application manifests.
+
+### 3. Add your root application
+
+The `root-app.yaml` file (located in the project root) defines the top-level Argo CD Application that bootstraps all other ApplicationSets and child Applications.
+This is known as the **App of Apps** pattern — a core Argo CD concept where a single root application manages multiple downstream apps automatically.
+
+You can create this root app in one of two ways:
+- **Option 1:** Apply it manually via `kubectl`:
+  ```bash
+  kubectl apply -f root-app.yaml
+  ```
+
+- **Option 2:** Create it through the Argo CD UI by selecting **New Application**, setting the source to your repo and path to the `/apps/` folder, then syncing it.
+
+Once this is applied, Argo CD will automatically begin syncing all infrastructure and environment apps defined under it.
+
 ## Argo CD Sync-Waves Recap
 
 Application Sync-Wave setup from `apps/templates/`:
