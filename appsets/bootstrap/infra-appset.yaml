@@ -3,8 +3,6 @@ kind: ApplicationSet
 metadata:
   name: infra-appset
   namespace: argocd
-  annotations:
-    argocd.argoproj.io/sync-wave: "0"
 spec:
   goTemplate: true
   goTemplateOptions: ["missingkey=error"]
