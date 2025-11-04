@@ -3,7 +3,6 @@ kind: IngressRoute
 metadata:
   name: longhorn-dashboard
   annotations:
-    argocd.argoproj.io/sync-wave: "2"
     cert-manager.io/cluster-issuer: letsencrypt-dns01-production
 spec:
   entryPoints:

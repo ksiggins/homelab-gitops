@@ -2,8 +2,6 @@ apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   name: traefik-dashboard
-  annotations:
-    argocd.argoproj.io/sync-wave: "3"
 spec:
   entryPoints:
     - websecure
