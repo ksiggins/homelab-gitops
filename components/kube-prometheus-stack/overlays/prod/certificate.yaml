@@ -1,0 +1,11 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: grafana-dashboard
+spec:
+  secretName: grafana-dashboard-tls
+  dnsNames:
+    - grafana.lab.supermorphic.com
+  issuerRef:
+    name: letsencrypt-dns01-production
+    kind: ClusterIssuer
