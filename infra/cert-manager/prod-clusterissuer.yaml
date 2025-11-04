@@ -2,6 +2,8 @@ apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
   name: letsencrypt-dns01-production
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
 spec:
   acme:
     email: letsencrypt.escapade@hushedmail.net
