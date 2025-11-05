@@ -13,7 +13,7 @@ spec:
         repoURL: https://github.com/ksiggins/homelab-gitops.git
         revision: appsets
         directories:
-          - path: components/*/overlays/staging
+          - path: apps/*/overlays/staging
   template:
     metadata:
       name: '{{index .path.segments 1}}-{{index .path.segments 3}}'
