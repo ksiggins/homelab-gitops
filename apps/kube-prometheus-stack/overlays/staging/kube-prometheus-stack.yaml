@@ -73939,25 +73939,6 @@ metadata:
     heritage: "Helm"
 automountServiceAccountToken: true
 ---
-# Source: kube-prometheus-stack/charts/grafana/templates/secret.yaml
-apiVersion: v1
-kind: Secret
-metadata:
-  name: kube-prometheus-stack-grafana
-  namespace: monitoring-staging
-  labels:
-    helm.sh/chart: grafana-10.1.4
-    app.kubernetes.io/name: grafana
-    app.kubernetes.io/instance: kube-prometheus-stack
-    app.kubernetes.io/version: "12.2.1"
-    app.kubernetes.io/component: admin-secret
-type: Opaque
-data:
-  
-  admin-user: "YWRtaW4="
-  admin-password: "RjNkN21iSE03M1psNW5uMGwyTDFSTm9VV2p6SFFXbUt0bW1ZWXVScw=="
-  ldap-toml: ""
----
 # Source: kube-prometheus-stack/templates/alertmanager/secret.yaml
 apiVersion: v1
 kind: Secret
@@ -75638,7 +75619,6 @@ spec:
       annotations:
         checksum/config: 0e9cbd0ea8e24e32f7dfca5bab17a2ba05652642f0a09a4882833ae88e4cc4a3
         checksum/sc-dashboard-provider-config: e70bf6a851099d385178a76de9757bb0bef8299da6d8443602590e44f05fdf24
-        checksum/secret: efcd34031962366245546b3b2b9b10916147e9b71508b7fd75b697f1c349a080
         kubectl.kubernetes.io/default-container: grafana
     spec:
       
@@ -75671,12 +75651,12 @@ spec:
             - name: REQ_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: kube-prometheus-stack-grafana
+                  name: grafana-admin-secret
                   key: admin-user
             - name: REQ_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: kube-prometheus-stack-grafana
+                  name: grafana-admin-secret
                   key: admin-password
             - name: REQ_URL
               value: http://localhost:3000/api/admin/provisioning/dashboards/reload
@@ -75709,12 +75689,12 @@ spec:
             - name: REQ_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: kube-prometheus-stack-grafana
+                  name: grafana-admin-secret
                   key: admin-user
             - name: REQ_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: kube-prometheus-stack-grafana
+                  name: grafana-admin-secret
                   key: admin-password
             - name: REQ_URL
               value: http://localhost:3000/api/admin/provisioning/datasources/reload
@@ -75774,12 +75754,12 @@ spec:
             - name: GF_SECURITY_ADMIN_USER
               valueFrom:
                 secretKeyRef:
-                  name: kube-prometheus-stack-grafana
+                  name: grafana-admin-secret
                   key: admin-user
             - name: GF_SECURITY_ADMIN_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: kube-prometheus-stack-grafana
+                  name: grafana-admin-secret
                   key: admin-password
             - name: GF_PATHS_DATA
               value: /var/lib/grafana/
@@ -76057,6 +76037,13 @@ spec:
     runAsUser: 1000
     seccompProfile:
       type: RuntimeDefault
+  storage:
+    volumeClaimTemplate:
+      spec:
+        resources:
+          requests:
+            storage: 1Gi
+        storageClassName: longhorn
   affinity:
     podAntiAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:
@@ -76185,6 +76172,13 @@ spec:
       release: "kube-prometheus-stack"
 
   scrapeConfigNamespaceSelector: {}
+  storage:
+    volumeClaimTemplate:
+      spec:
+        resources:
+          requests:
+            storage: 2Gi
+        storageClassName: longhorn
   affinity:
     podAntiAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:
@@ -76369,174 +76363,6 @@ spec:
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus-operator/configreloadersidecarerrors
         summary: config-reloader sidecar has not had a successful reload for 10m
       expr: max_over_time(reloader_last_reload_successful{namespace=~".+"}[5m]) == 0
-      for: 10m
-      labels:
-        severity: warning
----
-# Source: kube-prometheus-stack/templates/prometheus/rules-1.14/etcd.yaml
-apiVersion: monitoring.coreos.com/v1
-kind: PrometheusRule
-metadata:
-  name: kube-prometheus-stack-etcd
-  namespace: monitoring-staging
-  labels:
-    app: kube-prometheus-stack
-    
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/instance: kube-prometheus-stack
-    app.kubernetes.io/version: "79.1.0"
-    app.kubernetes.io/part-of: kube-prometheus-stack
-    chart: kube-prometheus-stack-79.1.0
-    release: "kube-prometheus-stack"
-    heritage: "Helm"
-spec:
-  groups:
-  - name: etcd
-    rules:
-    - alert: etcdMembersDown
-      annotations:
-        description: 'etcd cluster "{{ $labels.job }}": members are down ({{ $value }}).'
-        summary: etcd cluster members are down.
-      expr: |-
-        max without (endpoint) (
-          sum without (instance, pod) (up{job=~".*etcd.*"} == bool 0)
-        or
-          count without (To) (
-            sum without (instance, pod) (rate(etcd_network_peer_sent_failures_total{job=~".*etcd.*"}[120s])) > 0.01
-          )
-        )
-        > 0
-      for: 20m
-      labels:
-        severity: warning
-    - alert: etcdInsufficientMembers
-      annotations:
-        description: 'etcd cluster "{{ $labels.job }}": insufficient members ({{ $value }}).'
-        summary: etcd cluster has insufficient number of members.
-      expr: sum(up{job=~".*etcd.*"} == bool 1) without (instance, pod) < ((count(up{job=~".*etcd.*"}) without (instance, pod) + 1) / 2)
-      for: 3m
-      labels:
-        severity: critical
-    - alert: etcdNoLeader
-      annotations:
-        description: 'etcd cluster "{{ $labels.job }}": member {{ $labels.instance }} has no leader.'
-        summary: etcd cluster has no leader.
-      expr: etcd_server_has_leader{job=~".*etcd.*"} == 0
-      for: 1m
-      labels:
-        severity: critical
-    - alert: etcdHighNumberOfLeaderChanges
-      annotations:
-        description: 'etcd cluster "{{ $labels.job }}": {{ $value }} leader changes within the last 15 minutes. Frequent elections may be a sign of insufficient resources, high network latency, or disruptions by other components and should be investigated.'
-        summary: etcd cluster has high number of leader changes.
-      expr: increase((max without (instance, pod) (etcd_server_leader_changes_seen_total{job=~".*etcd.*"}) or 0*absent(etcd_server_leader_changes_seen_total{job=~".*etcd.*"}))[15m:1m]) >= 4
-      for: 5m
-      labels:
-        severity: warning
-    - alert: etcdHighNumberOfFailedGRPCRequests
-      annotations:
-        description: 'etcd cluster "{{ $labels.job }}": {{ $value }}% of requests for {{ $labels.grpc_method }} failed on etcd instance {{ $labels.instance }}.'
-        summary: etcd cluster has high number of failed grpc requests.
-      expr: |-
-        100 * sum(rate(grpc_server_handled_total{job=~".*etcd.*", grpc_code=~"Unknown|FailedPrecondition|ResourceExhausted|Internal|Unavailable|DataLoss|DeadlineExceeded"}[5m])) without (grpc_type, grpc_code)
-          /
-        sum(rate(grpc_server_handled_total{job=~".*etcd.*"}[5m])) without (grpc_type, grpc_code)
-          > 1
-      for: 10m
-      labels:
-        severity: warning
-    - alert: etcdHighNumberOfFailedGRPCRequests
-      annotations:
-        description: 'etcd cluster "{{ $labels.job }}": {{ $value }}% of requests for {{ $labels.grpc_method }} failed on etcd instance {{ $labels.instance }}.'
-        summary: etcd cluster has high number of failed grpc requests.
-      expr: |-
-        100 * sum(rate(grpc_server_handled_total{job=~".*etcd.*", grpc_code=~"Unknown|FailedPrecondition|ResourceExhausted|Internal|Unavailable|DataLoss|DeadlineExceeded"}[5m])) without (grpc_type, grpc_code)
-          /
-        sum(rate(grpc_server_handled_total{job=~".*etcd.*"}[5m])) without (grpc_type, grpc_code)
-          > 5
-      for: 5m
-      labels:
-        severity: critical
-    - alert: etcdGRPCRequestsSlow
-      annotations:
-        description: 'etcd cluster "{{ $labels.job }}": 99th percentile of gRPC requests is {{ $value }}s on etcd instance {{ $labels.instance }} for {{ $labels.grpc_method }} method.'
-        summary: etcd grpc requests are slow
-      expr: |-
-        histogram_quantile(0.99, sum(rate(grpc_server_handling_seconds_bucket{job=~".*etcd.*", grpc_method!="Defragment", grpc_type="unary"}[5m])) without(grpc_type))
-        > 0.15
-      for: 10m
-      labels:
-        severity: critical
-    - alert: etcdMemberCommunicationSlow
-      annotations:
-        description: 'etcd cluster "{{ $labels.job }}": member communication with {{ $labels.To }} is taking {{ $value }}s on etcd instance {{ $labels.instance }}.'
-        summary: etcd cluster member communication is slow.
-      expr: |-
-        histogram_quantile(0.99, rate(etcd_network_peer_round_trip_time_seconds_bucket{job=~".*etcd.*"}[5m]))
-        > 0.15
-      for: 10m
-      labels:
-        severity: warning
-    - alert: etcdHighNumberOfFailedProposals
-      annotations:
-        description: 'etcd cluster "{{ $labels.job }}": {{ $value }} proposal failures within the last 30 minutes on etcd instance {{ $labels.instance }}.'
-        summary: etcd cluster has high number of proposal failures.
-      expr: rate(etcd_server_proposals_failed_total{job=~".*etcd.*"}[15m]) > 5
-      for: 15m
-      labels:
-        severity: warning
-    - alert: etcdHighFsyncDurations
-      annotations:
-        description: 'etcd cluster "{{ $labels.job }}": 99th percentile fsync durations are {{ $value }}s on etcd instance {{ $labels.instance }}.'
-        summary: etcd cluster 99th percentile fsync durations are too high.
-      expr: |-
-        histogram_quantile(0.99, rate(etcd_disk_wal_fsync_duration_seconds_bucket{job=~".*etcd.*"}[5m]))
-        > 0.5
-      for: 10m
-      labels:
-        severity: warning
-    - alert: etcdHighFsyncDurations
-      annotations:
-        description: 'etcd cluster "{{ $labels.job }}": 99th percentile fsync durations are {{ $value }}s on etcd instance {{ $labels.instance }}.'
-        summary: etcd cluster 99th percentile fsync durations are too high.
-      expr: |-
-        histogram_quantile(0.99, rate(etcd_disk_wal_fsync_duration_seconds_bucket{job=~".*etcd.*"}[5m]))
-        > 1
-      for: 10m
-      labels:
-        severity: critical
-    - alert: etcdHighCommitDurations
-      annotations:
-        description: 'etcd cluster "{{ $labels.job }}": 99th percentile commit durations {{ $value }}s on etcd instance {{ $labels.instance }}.'
-        summary: etcd cluster 99th percentile commit durations are too high.
-      expr: |-
-        histogram_quantile(0.99, rate(etcd_disk_backend_commit_duration_seconds_bucket{job=~".*etcd.*"}[5m]))
-        > 0.25
-      for: 10m
-      labels:
-        severity: warning
-    - alert: etcdDatabaseQuotaLowSpace
-      annotations:
-        description: 'etcd cluster "{{ $labels.job }}": database size exceeds the defined quota on etcd instance {{ $labels.instance }}, please defrag or increase the quota as the writes to etcd will be disabled when it is full.'
-        summary: etcd cluster database is running full.
-      expr: (last_over_time(etcd_mvcc_db_total_size_in_bytes{job=~".*etcd.*"}[5m]) / last_over_time(etcd_server_quota_backend_bytes{job=~".*etcd.*"}[5m]))*100 > 95
-      for: 10m
-      labels:
-        severity: critical
-    - alert: etcdExcessiveDatabaseGrowth
-      annotations:
-        description: 'etcd cluster "{{ $labels.job }}": Predicting running out of disk space in the next four hours, based on write observations within the past four hours on etcd instance {{ $labels.instance }}, please check as it might be disruptive.'
-        summary: etcd cluster database growing very fast.
-      expr: predict_linear(etcd_mvcc_db_total_size_in_bytes{job=~".*etcd.*"}[4h], 4*60*60) > etcd_server_quota_backend_bytes{job=~".*etcd.*"}
-      for: 10m
-      labels:
-        severity: warning
-    - alert: etcdDatabaseHighFragmentationRatio
-      annotations:
-        description: 'etcd cluster "{{ $labels.job }}": database size in use on instance {{ $labels.instance }} is {{ $value | humanizePercentage }} of the actual allocated disk space, please run defragmentation (e.g. etcdctl defrag) to retrieve the unused fragmented disk space.'
-        runbook_url: https://etcd.io/docs/v3.5/op-guide/maintenance/#defragmentation
-        summary: etcd database size in use is less than 50% of the actual allocated storage.
-      expr: (last_over_time(etcd_mvcc_db_total_size_in_use_in_bytes{job=~".*etcd.*"}[5m]) / last_over_time(etcd_mvcc_db_total_size_in_bytes{job=~".*etcd.*"}[5m])) < 0.5 and etcd_mvcc_db_total_size_in_use_in_bytes{job=~".*etcd.*"} > 104857600
       for: 10m
       labels:
         severity: warning
@@ -76989,128 +76815,6 @@ spec:
         )
       record: namespace_workload_pod:kube_pod_owner:relabel
 ---
-# Source: kube-prometheus-stack/templates/prometheus/rules-1.14/kube-apiserver-availability.rules.yaml
-apiVersion: monitoring.coreos.com/v1
-kind: PrometheusRule
-metadata:
-  name: kube-prometheus-stack-kube-apiserver-availability.rules
-  namespace: monitoring-staging
-  labels:
-    app: kube-prometheus-stack
-    
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/instance: kube-prometheus-stack
-    app.kubernetes.io/version: "79.1.0"
-    app.kubernetes.io/part-of: kube-prometheus-stack
-    chart: kube-prometheus-stack-79.1.0
-    release: "kube-prometheus-stack"
-    heritage: "Helm"
-spec:
-  groups:
-  - interval: 3m
-    name: kube-apiserver-availability.rules
-    rules:
-    - expr: avg_over_time(code_verb:apiserver_request_total:increase1h[30d]) * 24 * 30
-      record: code_verb:apiserver_request_total:increase30d
-    - expr: sum by (cluster, code) (code_verb:apiserver_request_total:increase30d{verb=~"LIST|GET"})
-      labels:
-        verb: read
-      record: code:apiserver_request_total:increase30d
-    - expr: sum by (cluster, code) (code_verb:apiserver_request_total:increase30d{verb=~"POST|PUT|PATCH|DELETE"})
-      labels:
-        verb: write
-      record: code:apiserver_request_total:increase30d
-    - expr: sum by (cluster, verb, scope, le) (increase(apiserver_request_sli_duration_seconds_bucket[1h]))
-      record: cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase1h
-    - expr: sum by (cluster, verb, scope, le) (avg_over_time(cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase1h[30d]) * 24 * 30)
-      record: cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase30d
-    - expr: sum by (cluster, verb, scope) (cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase1h{le="+Inf"})
-      record: cluster_verb_scope:apiserver_request_sli_duration_seconds_count:increase1h
-    - expr: sum by (cluster, verb, scope) (cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase30d{le="+Inf"})
-      record: cluster_verb_scope:apiserver_request_sli_duration_seconds_count:increase30d
-    - expr: |-
-        1 - (
-          (
-            # write too slow
-            sum by (cluster) (cluster_verb_scope:apiserver_request_sli_duration_seconds_count:increase30d{verb=~"POST|PUT|PATCH|DELETE"})
-            -
-            sum by (cluster) (cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase30d{verb=~"POST|PUT|PATCH|DELETE",le=~"1(\\.0)?"} or vector(0))
-          ) +
-          (
-            # read too slow
-            sum by (cluster) (cluster_verb_scope:apiserver_request_sli_duration_seconds_count:increase30d{verb=~"LIST|GET"})
-            -
-            (
-              sum by (cluster) (cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase30d{verb=~"LIST|GET",scope=~"resource|",le=~"1(\\.0)?"} or vector(0))
-              +
-              sum by (cluster) (cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase30d{verb=~"LIST|GET",scope="namespace",le=~"5(\\.0)?"} or vector(0))
-              +
-              sum by (cluster) (cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase30d{verb=~"LIST|GET",scope="cluster",le=~"30(\\.0)?"} or vector(0))
-            )
-          ) +
-          # errors
-          sum by (cluster) (code:apiserver_request_total:increase30d{code=~"5.."} or vector(0))
-        )
-        /
-        sum by (cluster) (code:apiserver_request_total:increase30d)
-      labels:
-        verb: all
-      record: apiserver_request:availability30d
-    - expr: |-
-        1 - (
-          sum by (cluster) (cluster_verb_scope:apiserver_request_sli_duration_seconds_count:increase30d{verb=~"LIST|GET"})
-          -
-          (
-            # too slow
-            sum by (cluster) (cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase30d{verb=~"LIST|GET",scope=~"resource|",le=~"1(\\.0)?"} or vector(0))
-            +
-            sum by (cluster) (cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase30d{verb=~"LIST|GET",scope="namespace",le=~"5(\\.0)?"} or vector(0))
-            +
-            sum by (cluster) (cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase30d{verb=~"LIST|GET",scope="cluster",le=~"30(\\.0)?"} or vector(0))
-          )
-          +
-          # errors
-          sum by (cluster) (code:apiserver_request_total:increase30d{verb="read",code=~"5.."} or vector(0))
-        )
-        /
-        sum by (cluster) (code:apiserver_request_total:increase30d{verb="read"})
-      labels:
-        verb: read
-      record: apiserver_request:availability30d
-    - expr: |-
-        1 - (
-          (
-            # too slow
-            sum by (cluster) (cluster_verb_scope:apiserver_request_sli_duration_seconds_count:increase30d{verb=~"POST|PUT|PATCH|DELETE"})
-            -
-            sum by (cluster) (cluster_verb_scope_le:apiserver_request_sli_duration_seconds_bucket:increase30d{verb=~"POST|PUT|PATCH|DELETE",le=~"1(\\.0)?"} or vector(0))
-          )
-          +
-          # errors
-          sum by (cluster) (code:apiserver_request_total:increase30d{verb="write",code=~"5.."} or vector(0))
-        )
-        /
-        sum by (cluster) (code:apiserver_request_total:increase30d{verb="write"})
-      labels:
-        verb: write
-      record: apiserver_request:availability30d
-    - expr: sum by (cluster,code,resource) (rate(apiserver_request_total{job="apiserver",verb=~"LIST|GET"}[5m]))
-      labels:
-        verb: read
-      record: code_resource:apiserver_request_total:rate5m
-    - expr: sum by (cluster,code,resource) (rate(apiserver_request_total{job="apiserver",verb=~"POST|PUT|PATCH|DELETE"}[5m]))
-      labels:
-        verb: write
-      record: code_resource:apiserver_request_total:rate5m
-    - expr: sum by (cluster, code, verb) (increase(apiserver_request_total{job="apiserver",verb=~"LIST|GET|POST|PUT|PATCH|DELETE",code=~"2.."}[1h]))
-      record: code_verb:apiserver_request_total:increase1h
-    - expr: sum by (cluster, code, verb) (increase(apiserver_request_total{job="apiserver",verb=~"LIST|GET|POST|PUT|PATCH|DELETE",code=~"3.."}[1h]))
-      record: code_verb:apiserver_request_total:increase1h
-    - expr: sum by (cluster, code, verb) (increase(apiserver_request_total{job="apiserver",verb=~"LIST|GET|POST|PUT|PATCH|DELETE",code=~"4.."}[1h]))
-      record: code_verb:apiserver_request_total:increase1h
-    - expr: sum by (cluster, code, verb) (increase(apiserver_request_total{job="apiserver",verb=~"LIST|GET|POST|PUT|PATCH|DELETE",code=~"5.."}[1h]))
-      record: code_verb:apiserver_request_total:increase1h
----
 # Source: kube-prometheus-stack/templates/prometheus/rules-1.14/kube-apiserver-burnrate.rules.yaml
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
@@ -77463,141 +77167,6 @@ spec:
         quantile: '0.99'
         verb: write
       record: cluster_quantile:apiserver_request_sli_duration_seconds:histogram_quantile
----
-# Source: kube-prometheus-stack/templates/prometheus/rules-1.14/kube-apiserver-slos.yaml
-apiVersion: monitoring.coreos.com/v1
-kind: PrometheusRule
-metadata:
-  name: kube-prometheus-stack-kube-apiserver-slos
-  namespace: monitoring-staging
-  labels:
-    app: kube-prometheus-stack
-    
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/instance: kube-prometheus-stack
-    app.kubernetes.io/version: "79.1.0"
-    app.kubernetes.io/part-of: kube-prometheus-stack
-    chart: kube-prometheus-stack-79.1.0
-    release: "kube-prometheus-stack"
-    heritage: "Helm"
-spec:
-  groups:
-  - name: kube-apiserver-slos
-    rules:
-    - alert: KubeAPIErrorBudgetBurn
-      annotations:
-        description: The API server is burning too much error budget on cluster {{ $labels.cluster }}.
-        runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubeapierrorbudgetburn
-        summary: The API server is burning too much error budget.
-      expr: |-
-        sum by (cluster) (apiserver_request:burnrate1h) > (14.40 * 0.01000)
-        and on (cluster)
-        sum by (cluster) (apiserver_request:burnrate5m) > (14.40 * 0.01000)
-      for: 2m
-      labels:
-        long: 1h
-        severity: critical
-        short: 5m
-    - alert: KubeAPIErrorBudgetBurn
-      annotations:
-        description: The API server is burning too much error budget on cluster {{ $labels.cluster }}.
-        runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubeapierrorbudgetburn
-        summary: The API server is burning too much error budget.
-      expr: |-
-        sum by (cluster) (apiserver_request:burnrate6h) > (6.00 * 0.01000)
-        and on (cluster)
-        sum by (cluster) (apiserver_request:burnrate30m) > (6.00 * 0.01000)
-      for: 15m
-      labels:
-        long: 6h
-        severity: critical
-        short: 30m
-    - alert: KubeAPIErrorBudgetBurn
-      annotations:
-        description: The API server is burning too much error budget on cluster {{ $labels.cluster }}.
-        runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubeapierrorbudgetburn
-        summary: The API server is burning too much error budget.
-      expr: |-
-        sum by (cluster) (apiserver_request:burnrate1d) > (3.00 * 0.01000)
-        and on (cluster)
-        sum by (cluster) (apiserver_request:burnrate2h) > (3.00 * 0.01000)
-      for: 1h
-      labels:
-        long: 1d
-        severity: warning
-        short: 2h
-    - alert: KubeAPIErrorBudgetBurn
-      annotations:
-        description: The API server is burning too much error budget on cluster {{ $labels.cluster }}.
-        runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubeapierrorbudgetburn
-        summary: The API server is burning too much error budget.
-      expr: |-
-        sum by (cluster) (apiserver_request:burnrate3d) > (1.00 * 0.01000)
-        and on (cluster)
-        sum by (cluster) (apiserver_request:burnrate6h) > (1.00 * 0.01000)
-      for: 3h
-      labels:
-        long: 3d
-        severity: warning
-        short: 6h
----
-# Source: kube-prometheus-stack/templates/prometheus/rules-1.14/kube-prometheus-general.rules.yaml
-apiVersion: monitoring.coreos.com/v1
-kind: PrometheusRule
-metadata:
-  name: kube-prometheus-stack-kube-prometheus-general.rules
-  namespace: monitoring-staging
-  labels:
-    app: kube-prometheus-stack
-    
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/instance: kube-prometheus-stack
-    app.kubernetes.io/version: "79.1.0"
-    app.kubernetes.io/part-of: kube-prometheus-stack
-    chart: kube-prometheus-stack-79.1.0
-    release: "kube-prometheus-stack"
-    heritage: "Helm"
-spec:
-  groups:
-  - name: kube-prometheus-general.rules
-    rules:
-    - expr: count without(instance, pod, node) (up == 1)
-      record: count:up1
-    - expr: count without(instance, pod, node) (up == 0)
-      record: count:up0
----
-# Source: kube-prometheus-stack/templates/prometheus/rules-1.14/kube-prometheus-node-recording.rules.yaml
-apiVersion: monitoring.coreos.com/v1
-kind: PrometheusRule
-metadata:
-  name: kube-prometheus-stack-kube-prometheus-node-recording.rules
-  namespace: monitoring-staging
-  labels:
-    app: kube-prometheus-stack
-    
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/instance: kube-prometheus-stack
-    app.kubernetes.io/version: "79.1.0"
-    app.kubernetes.io/part-of: kube-prometheus-stack
-    chart: kube-prometheus-stack-79.1.0
-    release: "kube-prometheus-stack"
-    heritage: "Helm"
-spec:
-  groups:
-  - name: kube-prometheus-node-recording.rules
-    rules:
-    - expr: sum(rate(node_cpu_seconds_total{mode!="idle",mode!="iowait",mode!="steal"}[3m])) BY (instance)
-      record: instance:node_cpu:rate:sum
-    - expr: sum(rate(node_network_receive_bytes_total[3m])) BY (instance)
-      record: instance:node_network_receive_bytes:rate:sum
-    - expr: sum(rate(node_network_transmit_bytes_total[3m])) BY (instance)
-      record: instance:node_network_transmit_bytes:rate:sum
-    - expr: sum(rate(node_cpu_seconds_total{mode!="idle",mode!="iowait",mode!="steal"}[5m])) WITHOUT (cpu, mode) / ON (instance) GROUP_LEFT() count(sum(node_cpu_seconds_total) BY (instance, cpu)) BY (instance)
-      record: instance:node_cpu:ratio
-    - expr: sum(rate(node_cpu_seconds_total{mode!="idle",mode!="iowait",mode!="steal"}[5m]))
-      record: cluster:node_cpu:sum_rate5m
-    - expr: cluster:node_cpu:sum_rate5m / count(sum(node_cpu_seconds_total) BY (instance, cpu))
-      record: cluster:node_cpu:ratio
 ---
 # Source: kube-prometheus-stack/templates/prometheus/rules-1.14/kube-scheduler.rules.yaml
 apiVersion: monitoring.coreos.com/v1
@@ -78416,36 +77985,6 @@ spec:
       labels:
         severity: warning
 ---
-# Source: kube-prometheus-stack/templates/prometheus/rules-1.14/kubernetes-system-controller-manager.yaml
-apiVersion: monitoring.coreos.com/v1
-kind: PrometheusRule
-metadata:
-  name: kube-prometheus-stack-kubernetes-system-controller-manager
-  namespace: monitoring-staging
-  labels:
-    app: kube-prometheus-stack
-    
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/instance: kube-prometheus-stack
-    app.kubernetes.io/version: "79.1.0"
-    app.kubernetes.io/part-of: kube-prometheus-stack
-    chart: kube-prometheus-stack-79.1.0
-    release: "kube-prometheus-stack"
-    heritage: "Helm"
-spec:
-  groups:
-  - name: kubernetes-system-controller-manager
-    rules:
-    - alert: KubeControllerManagerDown
-      annotations:
-        description: KubeControllerManager has disappeared from Prometheus target discovery.
-        runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubecontrollermanagerdown
-        summary: Target disappeared from Prometheus target discovery.
-      expr: absent(up{job="kube-controller-manager"} == 1)
-      for: 15m
-      labels:
-        severity: critical
----
 # Source: kube-prometheus-stack/templates/prometheus/rules-1.14/kubernetes-system-kube-proxy.yaml
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
@@ -79159,36 +78698,6 @@ spec:
         summary: Bonding interface is degraded.
       expr: (node_bonding_slaves{job="node-exporter"} - node_bonding_active{job="node-exporter"}) != 0
       for: 5m
-      labels:
-        severity: warning
----
-# Source: kube-prometheus-stack/templates/prometheus/rules-1.14/node-network.yaml
-apiVersion: monitoring.coreos.com/v1
-kind: PrometheusRule
-metadata:
-  name: kube-prometheus-stack-node-network
-  namespace: monitoring-staging
-  labels:
-    app: kube-prometheus-stack
-    
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/instance: kube-prometheus-stack
-    app.kubernetes.io/version: "79.1.0"
-    app.kubernetes.io/part-of: kube-prometheus-stack
-    chart: kube-prometheus-stack-79.1.0
-    release: "kube-prometheus-stack"
-    heritage: "Helm"
-spec:
-  groups:
-  - name: node-network
-    rules:
-    - alert: NodeNetworkInterfaceFlapping
-      annotations:
-        description: Network interface "{{ $labels.device }}" changing its up status often on node-exporter {{ $labels.namespace }}/{{ $labels.pod }}
-        runbook_url: https://runbooks.prometheus-operator.dev/runbooks/general/nodenetworkinterfaceflapping
-        summary: Network interface is often changing its status
-      expr: changes(node_network_up{job="node-exporter",device!~"veth.+"}[2m]) > 2
-      for: 2m
       labels:
         severity: warning
 ---
