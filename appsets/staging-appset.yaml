@@ -3,8 +3,6 @@ kind: ApplicationSet
 metadata:
   name: staging-appset
   namespace: argocd
-  annotations:
-    argocd.argoproj.io/sync-wave: "1"
 spec:
   goTemplate: true
   goTemplateOptions: ["missingkey=error"]
@@ -17,9 +15,7 @@ spec:
   template:
     metadata:
       name: '{{index .path.segments 1}}-{{index .path.segments 3}}'
-      labels:
-        env: staging
-        app.kubernetes.io/part-of: homelab-gitops
+      namespace: argocd
     spec:
       project: default
       source:
@@ -28,11 +24,9 @@ spec:
         path: '{{.path.path}}'
       destination:
         server: https://kubernetes.default.svc
-        namespace: '{{index .path.segments 1}}-{{index .path.segments 3}}'
       syncPolicy:
         automated:
           prune: true
           selfHeal: true
         syncOptions:
-          - CreateNamespace=true
           - ServerSideApply=true
