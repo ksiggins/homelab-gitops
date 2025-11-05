@@ -14,6 +14,8 @@ spec:
           namespace: argocd
           port: 443
           scheme: https
-          serversTransport: argocd-staging-insecure-noverify@kubernetescrd
+          passHostHeader: true
+          serversTransport:
+            insecureSkipVerify: true
   tls:
     secretName: argocd-server-tls
