@@ -5,6 +5,10 @@ ingressRoute:
   dashboard:
     enabled: false
 
+providers:
+  kubernetesCRD:
+    allowCrossNamespace: true
+
 globalArguments:
   - "--global.checknewversion=false"
   - "--global.sendanonymoususage=false"
