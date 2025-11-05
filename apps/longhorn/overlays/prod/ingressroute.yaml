@@ -13,6 +13,7 @@ spec:
       kind: Rule
       services:
         - name: longhorn-frontend
+          namespace: longhorn-system
           port: 80
   tls:
     secretName: longhorn-dashboard-tls
