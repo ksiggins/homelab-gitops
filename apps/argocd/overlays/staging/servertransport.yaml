@@ -1,8 +1,8 @@
 apiVersion: traefik.io/v1alpha1
 kind: ServersTransport
 metadata:
-  name: insecure-noverify
+  name: argocd-staging-insecure-noverify
   namespace: argocd-staging
 spec:
-  serverName: "argocd-server.argocd.svc.cluster.local"
   insecureSkipVerify: true
+  serverName: argocd-server.argocd.svc.cluster.local
