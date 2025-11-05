@@ -20,6 +20,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: longhorn-service-account
+  namespace: longhorn
   labels:
     app.kubernetes.io/name: longhorn
     helm.sh/chart: longhorn-1.10.0
@@ -32,6 +33,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: longhorn-ui-service-account
+  namespace: longhorn
   labels:
     app.kubernetes.io/name: longhorn
     helm.sh/chart: longhorn-1.10.0
@@ -44,6 +46,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: longhorn-support-bundle
+  namespace: longhorn
   labels:
     app.kubernetes.io/name: longhorn
     helm.sh/chart: longhorn-1.10.0
@@ -56,6 +59,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: longhorn-default-resource
+  namespace: longhorn
   labels:
     app.kubernetes.io/name: longhorn
     helm.sh/chart: longhorn-1.10.0
@@ -70,6 +74,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: longhorn-default-setting
+  namespace: longhorn
   labels:
     app.kubernetes.io/name: longhorn
     helm.sh/chart: longhorn-1.10.0
@@ -88,6 +93,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: longhorn-storageclass
+  namespace: longhorn
   labels:
     app.kubernetes.io/name: longhorn
     helm.sh/chart: longhorn-1.10.0
@@ -4114,6 +4120,7 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: longhorn-service-account
+  namespace: longhorn
 ---
 # Source: longhorn/templates/clusterrolebinding.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -4133,12 +4140,14 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: longhorn-support-bundle
+  namespace: longhorn
 ---
 # Source: longhorn/templates/role.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: longhorn
+  namespace: longhorn
   labels:
     app.kubernetes.io/name: longhorn
     helm.sh/chart: longhorn-1.10.0
@@ -4173,6 +4182,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: longhorn
+  namespace: longhorn
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
@@ -4180,6 +4190,7 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: longhorn-service-account
+  namespace: longhorn
 ---
 # Source: longhorn/templates/daemonset-sa.yaml
 apiVersion: v1
@@ -4193,6 +4204,7 @@ metadata:
     app.kubernetes.io/version: v1.10.0
     app: longhorn-manager
   name: longhorn-backend
+  namespace: longhorn
 spec:
   type: ClusterIP
   selector:
@@ -4214,6 +4226,7 @@ metadata:
     app.kubernetes.io/version: v1.10.0
     app: longhorn-ui
   name: longhorn-frontend
+  namespace: longhorn
 spec:
   type: ClusterIP
   selector:
@@ -4236,6 +4249,7 @@ metadata:
     app.kubernetes.io/version: v1.10.0
     app: longhorn-admission-webhook
   name: longhorn-admission-webhook
+  namespace: longhorn
 spec:
   type: ClusterIP
   selector:
@@ -4257,6 +4271,7 @@ metadata:
     app.kubernetes.io/version: v1.10.0
     app: longhorn-recovery-backend
   name: longhorn-recovery-backend
+  namespace: longhorn
 spec:
   type: ClusterIP
   selector:
@@ -4278,6 +4293,7 @@ metadata:
     app.kubernetes.io/version: v1.10.0
     app: longhorn-manager
   name: longhorn-manager
+  namespace: longhorn
 spec:
   selector:
     matchLabels:
@@ -4401,6 +4417,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: longhorn-driver-deployer
+  namespace: longhorn
   labels:
     app.kubernetes.io/name: longhorn
     helm.sh/chart: longhorn-1.10.0
@@ -4480,6 +4497,7 @@ metadata:
     app.kubernetes.io/version: v1.10.0
     app: longhorn-ui
   name: longhorn-ui
+  namespace: longhorn
 spec:
   replicas: 2
   selector:
@@ -4547,6 +4565,7 @@ metadata:
     "helm.sh/hook": post-upgrade
     "helm.sh/hook-delete-policy": hook-succeeded,before-hook-creation
   name: longhorn-post-upgrade
+  namespace: longhorn
   labels:
     app.kubernetes.io/name: longhorn
     helm.sh/chart: longhorn-1.10.0
@@ -4593,6 +4612,7 @@ metadata:
     "helm.sh/hook": pre-delete
     "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
   name: longhorn-uninstall
+  namespace: longhorn
   labels:
     app.kubernetes.io/name: longhorn
     helm.sh/chart: longhorn-1.10.0

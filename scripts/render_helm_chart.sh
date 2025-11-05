@@ -8,13 +8,14 @@
 #   name: cert-manager
 #   repo: https://charts.jetstack.io
 #   version: 1.19.1
+#   namespace: cert-manager
 #   valuesFile: values.yaml
 #
 # Notes:
 #   - 'name' and 'repo' are required.
 #   - If 'version' is omitted, latest chart version is used.
+#   - If 'namespace' is omitted, script removes 'namespace: default' lines.
 #   - Output is written to <chart-name>.yaml in the same folder as the spec file.
-#   - All 'namespace:' lines are removed from output to allow Argo CD to inject its own.
 
 set -eEuo pipefail
 
@@ -23,6 +24,7 @@ print_example() {
   echo "  name: cert-manager"
   echo "  repo: https://charts.jetstack.io"
   echo "  version: 1.19.1"
+  echo "  namespace: cert-manager"
   echo "  valuesFile: values.yaml"
 }
 
@@ -34,7 +36,6 @@ if [ $# -lt 1 ]; then
 fi
 
 DEF_FILE="$1"
-
 if [ ! -f "$DEF_FILE" ]; then
   echo "Error: File '$DEF_FILE' not found." >&2
   echo ""
@@ -43,7 +44,6 @@ if [ ! -f "$DEF_FILE" ]; then
 fi
 
 SPEC_DIR="$(cd "$(dirname "$DEF_FILE")" && pwd)"
-BASENAME="$(basename "$DEF_FILE")"
 
 # Simple YAML parser for "key: value" pairs
 parse_yaml_value() {
@@ -63,6 +63,7 @@ REPO_URL="$(parse_yaml_value repo)"
 CHART_VERSION="$(parse_yaml_value version)"
 VALUES_FILE="$(parse_yaml_value valuesFile)"
 CHART_PATH="$(parse_yaml_value chart)"
+NAMESPACE="$(parse_yaml_value namespace)"
 
 # Validate required fields
 if [ -z "$CHART_NAME" ] || [ -z "$REPO_URL" ]; then
@@ -94,21 +95,35 @@ echo "Ensuring Helm repo for $CHART_NAME exists ($REPO_URL)"
 helm repo add "$CHART_NAME" "$REPO_URL" >/dev/null 2>&1 || true
 helm repo update >/dev/null 2>&1
 
-# Render Helm chart and strip namespaces
+# Print render context
+echo ""
 echo "Rendering Helm chart:"
 echo "  Chart: $CHART_PATH"
 echo "  Repo:  $REPO_URL"
 [ -n "$CHART_VERSION" ] && echo "  Version: $CHART_VERSION"
+[ -n "$NAMESPACE" ] && echo "  Namespace: $NAMESPACE" || echo "  Namespace: (none - will strip 'namespace: default')"
 echo "  Output: $OUT_FILE"
+echo ""
 
+# Render Helm chart
 TMP_FILE="$(mktemp)"
-helm template "$CHART_NAME" "$CHART_NAME/$CHART_PATH" \
-  ${CHART_VERSION:+--version "$CHART_VERSION"} \
-  $USE_VALUES > "$TMP_FILE"
+if [ -n "$NAMESPACE" ]; then
+  helm template "$CHART_NAME" "$CHART_NAME/$CHART_PATH" \
+    --namespace "$NAMESPACE" \
+    ${CHART_VERSION:+--version "$CHART_VERSION"} \
+    $USE_VALUES \
+    > "$TMP_FILE"
+else
+  helm template "$CHART_NAME" "$CHART_NAME/$CHART_PATH" \
+    ${CHART_VERSION:+--version "$CHART_VERSION"} \
+    $USE_VALUES \
+    > "$TMP_FILE"
+  # Remove only 'namespace: default' lines
+  sed '/^[[:space:]]*namespace:[[:space:]]*default$/d' "$TMP_FILE" > "${TMP_FILE}.clean"
+  mv "${TMP_FILE}.clean" "$TMP_FILE"
+fi
 
-# Remove only real metadata.namespace lines (e.g., 'namespace: default' or '  namespace: default')
-sed '/^[[:space:]]*namespace:[[:space:]]*default$/d' "$TMP_FILE" > "$OUT_FILE"
-rm -f "$TMP_FILE"
+# Save output
+mv "$TMP_FILE" "$OUT_FILE"
 
-echo "Removed all 'namespace:' fields."
 echo "Render complete: $OUT_FILE"

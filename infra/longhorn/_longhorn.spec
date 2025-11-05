@@ -3,4 +3,5 @@
 name: longhorn
 repo: https://charts.longhorn.io
 version: 1.10.0
+namespace: longhorn
 valuesFile: values.yaml
