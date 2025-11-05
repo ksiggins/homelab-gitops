@@ -2,6 +2,7 @@ apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   name: longhorn-dashboard
+  namespace: longhorn-system-prod
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-dns01-production
 spec:

@@ -4,10 +4,10 @@ kind: ServiceAccount
 apiVersion: v1
 metadata:
   name: traefik
-  namespace: traefik-v2
+  namespace: traefik-v2-staging
   labels:
     app.kubernetes.io/name: traefik
-    app.kubernetes.io/instance: traefik-traefik-v2
+    app.kubernetes.io/instance: traefik-traefik-v2-staging
     helm.sh/chart: traefik-37.2.0
     app.kubernetes.io/managed-by: Helm
   annotations:
@@ -17,10 +17,10 @@ automountServiceAccountToken: false
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: traefik-traefik-v2
+  name: traefik-traefik-v2-staging
   labels:
     app.kubernetes.io/name: traefik
-    app.kubernetes.io/instance: traefik-traefik-v2
+    app.kubernetes.io/instance: traefik-traefik-v2-staging
     helm.sh/chart: traefik-37.2.0
     app.kubernetes.io/managed-by: Helm
 rules:
@@ -94,30 +94,30 @@ rules:
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: traefik-traefik-v2
+  name: traefik-traefik-v2-staging
   labels:
     app.kubernetes.io/name: traefik
-    app.kubernetes.io/instance: traefik-traefik-v2
+    app.kubernetes.io/instance: traefik-traefik-v2-staging
     helm.sh/chart: traefik-37.2.0
     app.kubernetes.io/managed-by: Helm
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: traefik-traefik-v2
+  name: traefik-traefik-v2-staging
 subjects:
   - kind: ServiceAccount
     name: traefik
-    namespace: traefik-v2
+    namespace: traefik-v2-staging
 ---
 # Source: traefik/templates/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
   name: traefik
-  namespace: traefik-v2
+  namespace: traefik-v2-staging
   labels:
     app.kubernetes.io/name: traefik
-    app.kubernetes.io/instance: traefik-traefik-v2
+    app.kubernetes.io/instance: traefik-traefik-v2-staging
     helm.sh/chart: traefik-37.2.0
     app.kubernetes.io/managed-by: Helm
   annotations:
@@ -125,7 +125,7 @@ spec:
   type: LoadBalancer
   selector:
     app.kubernetes.io/name: traefik
-    app.kubernetes.io/instance: traefik-traefik-v2
+    app.kubernetes.io/instance: traefik-traefik-v2-staging
   ports:
   - port: 80
     name: web
@@ -141,10 +141,10 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: traefik
-  namespace: traefik-v2
+  namespace: traefik-v2-staging
   labels:
     app.kubernetes.io/name: traefik
-    app.kubernetes.io/instance: traefik-traefik-v2
+    app.kubernetes.io/instance: traefik-traefik-v2-staging
     helm.sh/chart: traefik-37.2.0
     app.kubernetes.io/managed-by: Helm
   annotations:
@@ -153,7 +153,7 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: traefik
-      app.kubernetes.io/instance: traefik-traefik-v2
+      app.kubernetes.io/instance: traefik-traefik-v2-staging
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -168,7 +168,7 @@ spec:
         prometheus.io/port: "9100"
       labels:
         app.kubernetes.io/name: traefik
-        app.kubernetes.io/instance: traefik-traefik-v2
+        app.kubernetes.io/instance: traefik-traefik-v2-staging
         helm.sh/chart: traefik-37.2.0
         app.kubernetes.io/managed-by: Helm
     spec:
@@ -241,7 +241,7 @@ spec:
           - "--providers.kubernetescrd.allowEmptyServices=true"
           - "--providers.kubernetesingress"
           - "--providers.kubernetesingress.allowEmptyServices=true"
-          - "--providers.kubernetesingress.ingressendpoint.publishedservice=traefik-v2/traefik"
+          - "--providers.kubernetesingress.ingressendpoint.publishedservice=traefik-v2-staging/traefik"
           - "--entryPoints.web.http.redirections.entryPoint.to=:443"
           - "--entryPoints.web.http.redirections.entryPoint.scheme=https"
           - "--entryPoints.web.http.redirections.entryPoint.permanent=true"
@@ -277,7 +277,7 @@ metadata:
     ingressclass.kubernetes.io/is-default-class: "true"
   labels:
     app.kubernetes.io/name: traefik
-    app.kubernetes.io/instance: traefik-traefik-v2
+    app.kubernetes.io/instance: traefik-traefik-v2-staging
     helm.sh/chart: traefik-37.2.0
     app.kubernetes.io/managed-by: Helm
   name: traefik

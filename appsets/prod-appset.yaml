@@ -15,9 +15,6 @@ spec:
   template:
     metadata:
       name: '{{index .path.segments 1}}-{{index .path.segments 3}}'
-      labels:
-        env: prod
-        app.kubernetes.io/part-of: homelab-gitops
     spec:
       project: default
       source:
@@ -26,12 +23,9 @@ spec:
         path: '{{.path.path}}'
       destination:
         server: https://kubernetes.default.svc
-        namespace: '{{index .path.segments 1}}-{{index .path.segments 3}}'
       syncPolicy:
         automated:
           prune: true
           selfHeal: true
         syncOptions:
-          - CreateNamespace=true
           - ServerSideApply=true
-          - Validate=false
