@@ -4,3 +4,5 @@ name: kube-prometheus-stack
 repo: https://prometheus-community.github.io/helm-charts
 namespace: monitoring-prod
 version: 79.1.0
+includeCRDs: true
+

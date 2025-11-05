@@ -10,21 +10,15 @@
 #   version: 1.19.1
 #   namespace: cert-manager
 #   valuesFile: values.yaml
+#   includeCRDs: true
 #
 # Behavior:
-#   - Always renders with '--include-crds' to ensure CustomResourceDefinitions
-#     are included in every manifest output. This guarantees each rendered file
-#     is fully self-contained and suitable for bootstrapping a fresh cluster.
+#   - If 'includeCRDs: true' is set, adds '--include-crds' to the Helm command
+#     so CRD definitions are included in the rendered output.
 #   - 'name' and 'repo' are required.
 #   - If 'version' is omitted, the latest chart version is used.
 #   - If 'namespace' is omitted, the default 'default' namespace is applied.
 #   - Output is written to <chart-name>.yaml in the same folder as the spec file.
-#
-# Notes:
-#   - Because CRDs are always rendered, re-applying manifests from multiple
-#     versions may surface harmless "configured" messages, but breaking schema
-#     changes must still be handled manually (delete/reapply CRDs if needed).
-#   - This behavior cannot be disabled.
 
 set -eEuo pipefail
 
@@ -35,6 +29,7 @@ print_example() {
   echo "  version: 1.19.1"
   echo "  namespace: cert-manager"
   echo "  valuesFile: values.yaml"
+  echo "  includeCRDs: true"
 }
 
 if [ $# -lt 1 ]; then
@@ -73,6 +68,7 @@ CHART_VERSION="$(parse_yaml_value version)"
 VALUES_FILE="$(parse_yaml_value valuesFile)"
 CHART_PATH="$(parse_yaml_value chart)"
 NAMESPACE="$(parse_yaml_value namespace)"
+INCLUDE_CRDS_RAW="$(parse_yaml_value includeCRDs)"
 
 # Validate required fields
 if [ -z "$CHART_NAME" ] || [ -z "$REPO_URL" ]; then
@@ -86,6 +82,14 @@ fi
 CHART_PATH="${CHART_PATH:-$CHART_NAME}"
 NAMESPACE="${NAMESPACE:-default}"
 OUT_FILE="$SPEC_DIR/${CHART_NAME}.yaml"
+
+# Normalize includeCRDs value (case-insensitive, macOS-safe)
+INCLUDE_CRDS_RAW_LOWER="$(echo "$INCLUDE_CRDS_RAW" | tr '[:upper:]' '[:lower:]' 2>/dev/null || true)"
+if [ "$INCLUDE_CRDS_RAW_LOWER" = "true" ] || [ "$INCLUDE_CRDS_RAW_LOWER" = "yes" ] || [ "$INCLUDE_CRDS_RAW_LOWER" = "on" ] || [ "$INCLUDE_CRDS_RAW_LOWER" = "1" ]; then
+  INCLUDE_CRDS_FLAG="--include-crds"
+else
+  INCLUDE_CRDS_FLAG=""
+fi
 
 # Optional values flag
 if [ -n "$VALUES_FILE" ]; then
@@ -112,16 +116,21 @@ echo "  Chart: $CHART_PATH"
 echo "  Repo:  $REPO_URL"
 [ -n "$CHART_VERSION" ] && echo "  Version: $CHART_VERSION"
 echo "  Namespace: $NAMESPACE"
+if [ -n "$INCLUDE_CRDS_FLAG" ]; then
+  echo "  Include CRDs: true"
+else
+  echo "  Include CRDs: false"
+fi
 echo "  Output: $OUT_FILE"
 echo ""
 
-# Render Helm chart (always includes CRDs)
+# Render Helm chart
 TMP_FILE="$(mktemp)"
 helm template "$CHART_NAME" "$CHART_NAME/$CHART_PATH" \
   --namespace "$NAMESPACE" \
-  --include-crds \
   ${CHART_VERSION:+--version "$CHART_VERSION"} \
   $USE_VALUES \
+  $INCLUDE_CRDS_FLAG \
   > "$TMP_FILE"
 
 # Save output
