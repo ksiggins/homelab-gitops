@@ -11,11 +11,20 @@
 #   namespace: cert-manager
 #   valuesFile: values.yaml
 #
-# Notes:
+# Behavior:
+#   - Always renders with '--include-crds' to ensure CustomResourceDefinitions
+#     are included in every manifest output. This guarantees each rendered file
+#     is fully self-contained and suitable for bootstrapping a fresh cluster.
 #   - 'name' and 'repo' are required.
-#   - If 'version' is omitted, latest chart version is used.
-#   - If 'namespace' is omitted, script removes 'namespace: default' lines.
+#   - If 'version' is omitted, the latest chart version is used.
+#   - If 'namespace' is omitted, the default 'default' namespace is applied.
 #   - Output is written to <chart-name>.yaml in the same folder as the spec file.
+#
+# Notes:
+#   - Because CRDs are always rendered, re-applying manifests from multiple
+#     versions may surface harmless "configured" messages, but breaking schema
+#     changes must still be handled manually (delete/reapply CRDs if needed).
+#   - This behavior cannot be disabled.
 
 set -eEuo pipefail
 
@@ -75,6 +84,7 @@ fi
 
 # Defaults
 CHART_PATH="${CHART_PATH:-$CHART_NAME}"
+NAMESPACE="${NAMESPACE:-default}"
 OUT_FILE="$SPEC_DIR/${CHART_NAME}.yaml"
 
 # Optional values flag
@@ -101,27 +111,18 @@ echo "Rendering Helm chart:"
 echo "  Chart: $CHART_PATH"
 echo "  Repo:  $REPO_URL"
 [ -n "$CHART_VERSION" ] && echo "  Version: $CHART_VERSION"
-[ -n "$NAMESPACE" ] && echo "  Namespace: $NAMESPACE" || echo "  Namespace: (none - will strip 'namespace: default')"
+echo "  Namespace: $NAMESPACE"
 echo "  Output: $OUT_FILE"
 echo ""
 
-# Render Helm chart
+# Render Helm chart (always includes CRDs)
 TMP_FILE="$(mktemp)"
-if [ -n "$NAMESPACE" ]; then
-  helm template "$CHART_NAME" "$CHART_NAME/$CHART_PATH" \
-    --namespace "$NAMESPACE" \
-    ${CHART_VERSION:+--version "$CHART_VERSION"} \
-    $USE_VALUES \
-    > "$TMP_FILE"
-else
-  helm template "$CHART_NAME" "$CHART_NAME/$CHART_PATH" \
-    ${CHART_VERSION:+--version "$CHART_VERSION"} \
-    $USE_VALUES \
-    > "$TMP_FILE"
-  # Remove only 'namespace: default' lines
-  sed '/^[[:space:]]*namespace:[[:space:]]*default$/d' "$TMP_FILE" > "${TMP_FILE}.clean"
-  mv "${TMP_FILE}.clean" "$TMP_FILE"
-fi
+helm template "$CHART_NAME" "$CHART_NAME/$CHART_PATH" \
+  --namespace "$NAMESPACE" \
+  --include-crds \
+  ${CHART_VERSION:+--version "$CHART_VERSION"} \
+  $USE_VALUES \
+  > "$TMP_FILE"
 
 # Save output
 mv "$TMP_FILE" "$OUT_FILE"
