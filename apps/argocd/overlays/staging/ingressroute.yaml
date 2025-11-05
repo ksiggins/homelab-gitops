@@ -14,6 +14,6 @@ spec:
           namespace: argocd
           port: 443
           scheme: https
-          serversTransport: insecure-noverify
+          serversTransport: traefik-v2-staging-insecure-noverify@kubernetescrd
   tls:
     secretName: argocd-server-tls
