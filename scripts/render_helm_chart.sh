@@ -14,6 +14,7 @@
 #   - 'name' and 'repo' are required.
 #   - If 'version' is omitted, latest chart version is used.
 #   - Output is written to <chart-name>.yaml in the same folder as the spec file.
+#   - All 'namespace:' lines are removed from output to allow Argo CD to inject its own.
 
 set -eEuo pipefail
 
@@ -41,8 +42,8 @@ if [ ! -f "$DEF_FILE" ]; then
   exit 1
 fi
 
-BASENAME="$(basename "$DEF_FILE")"
 SPEC_DIR="$(cd "$(dirname "$DEF_FILE")" && pwd)"
+BASENAME="$(basename "$DEF_FILE")"
 
 # Simple YAML parser for "key: value" pairs
 parse_yaml_value() {
@@ -93,16 +94,21 @@ echo "Ensuring Helm repo for $CHART_NAME exists ($REPO_URL)"
 helm repo add "$CHART_NAME" "$REPO_URL" >/dev/null 2>&1 || true
 helm repo update >/dev/null 2>&1
 
-# Render
+# Render Helm chart and strip namespaces
 echo "Rendering Helm chart:"
 echo "  Chart: $CHART_PATH"
 echo "  Repo:  $REPO_URL"
 [ -n "$CHART_VERSION" ] && echo "  Version: $CHART_VERSION"
 echo "  Output: $OUT_FILE"
 
+TMP_FILE="$(mktemp)"
 helm template "$CHART_NAME" "$CHART_NAME/$CHART_PATH" \
   ${CHART_VERSION:+--version "$CHART_VERSION"} \
-  $USE_VALUES \
-  > "$OUT_FILE"
+  $USE_VALUES > "$TMP_FILE"
 
+# Remove only real metadata.namespace lines (e.g., 'namespace: default' or '  namespace: default')
+sed '/^[[:space:]]*namespace:[[:space:]]*default$/d' "$TMP_FILE" > "$OUT_FILE"
+rm -f "$TMP_FILE"
+
+echo "Removed all 'namespace:' fields."
 echo "Render complete: $OUT_FILE"
