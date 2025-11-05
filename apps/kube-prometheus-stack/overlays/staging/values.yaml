@@ -1,0 +1,44 @@
+grafana:
+  admin:
+    existingSecret: grafana-admin-secret
+    userKey: admin-user
+    passwordKey: admin-password
+  persistence:
+    enabled: false
+
+prometheus:
+  prometheusSpec:
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          resources:
+            requests:
+              storage: 2Gi
+          storageClassName: longhorn
+
+alertmanager:
+  alertmanagerSpec:
+    storage:
+      volumeClaimTemplate:
+        spec:
+          resources:
+            requests:
+              storage: 1Gi
+          storageClassName: longhorn
+
+defaultRules:
+  create: true
+  rules:
+    alertmanager: true
+    general: true
+    kubernetesApps: true
+    kubernetesResources: true
+    node: true
+    prometheus: true
+    network: false
+    etcd: false
+    kubeApiserverAvailability: false
+    kubeApiserverSlos: false
+    kubeControllerManager: false
+    kubePrometheusGeneral: false
+    kubePrometheusNodeRecording: false
