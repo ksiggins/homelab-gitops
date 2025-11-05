@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: argocd-server-certificate
+  namespace: argocd-staging
+spec:
+  secretName: argocd-server-tls
+  dnsNames:
+    - argocd.staging.lab.supermorphic.com
+  issuerRef:
+    name: letsencrypt-dns01-staging
+    kind: ClusterIssuer
