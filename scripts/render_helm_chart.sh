@@ -106,8 +106,14 @@ fi
 
 # Add / update repo
 echo "Ensuring Helm repo for $CHART_NAME exists ($REPO_URL)"
-helm repo add "$CHART_NAME" "$REPO_URL" >/dev/null 2>&1 || true
-helm repo update >/dev/null 2>&1
+if [[ "$REPO_URL" =~ ^oci:// ]]; then
+  echo "Detected OCI chart; skipping 'helm repo add' and 'helm repo update'."
+  IS_OCI_CHART=true
+else
+  helm repo add "$CHART_NAME" "$REPO_URL" >/dev/null 2>&1 || true
+  helm repo update >/dev/null 2>&1
+  IS_OCI_CHART=false
+fi
 
 # Print render context
 echo ""
@@ -126,12 +132,21 @@ echo ""
 
 # Render Helm chart
 TMP_FILE="$(mktemp)"
-helm template "$CHART_NAME" "$CHART_NAME/$CHART_PATH" \
-  --namespace "$NAMESPACE" \
-  ${CHART_VERSION:+--version "$CHART_VERSION"} \
-  $USE_VALUES \
-  $INCLUDE_CRDS_FLAG \
-  > "$TMP_FILE"
+if [ "$IS_OCI_CHART" = true ]; then
+  helm template "$CHART_NAME" "$REPO_URL" \
+    --namespace "$NAMESPACE" \
+    ${CHART_VERSION:+--version "$CHART_VERSION"} \
+    $USE_VALUES \
+    $INCLUDE_CRDS_FLAG \
+    > "$TMP_FILE"
+else
+  helm template "$CHART_NAME" "$CHART_NAME/$CHART_PATH" \
+    --namespace "$NAMESPACE" \
+    ${CHART_VERSION:+--version "$CHART_VERSION"} \
+    $USE_VALUES \
+    $INCLUDE_CRDS_FLAG \
+    > "$TMP_FILE"
+fi
 
 # Save output
 mv "$TMP_FILE" "$OUT_FILE"

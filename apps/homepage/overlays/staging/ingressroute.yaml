@@ -1,0 +1,16 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: homepage-dashboard
+  namespace: homepage-staging
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`homepage.staging.lab.supermorphic.com`)
+      kind: Rule
+      services:
+        - name: homepage
+          port: 80
+  tls:
+    secretName: homepage-dashboard-tls

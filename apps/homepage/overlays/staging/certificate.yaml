@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: homepage-dasbhoard-certificate
+  namespace: homepage-staging
+spec:
+  secretName: homepage-server-tls
+  dnsNames:
+    - homepage.staging.lab.supermorphic.com
+  issuerRef:
+    name: letsencrypt-dns01-staging
+    kind: ClusterIssuer
