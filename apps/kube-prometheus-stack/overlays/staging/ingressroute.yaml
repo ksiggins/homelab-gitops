@@ -3,8 +3,6 @@ kind: IngressRoute
 metadata:
   name: grafana-dashboard
   namespace: monitoring-staging
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-dns01-staging
 spec:
   entryPoints:
     - websecure

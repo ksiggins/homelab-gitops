@@ -3,8 +3,6 @@ kind: IngressRoute
 metadata:
   name: longhorn-dashboard
   namespace: longhorn-system-prod
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-dns01-production
 spec:
   entryPoints:
     - websecure
