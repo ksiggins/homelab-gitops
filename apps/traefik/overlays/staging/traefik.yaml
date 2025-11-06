@@ -250,6 +250,9 @@ spec:
           - "--entryPoints.websecure.http.tls=true"
           - "--log.level=INFO"
         
+          - "--global.checknewversion=false"
+          - "--global.sendanonymoususage=false"
+          - "--serversTransport.insecureSkipVerify=true"
         env:
           - name: POD_NAME
             valueFrom:

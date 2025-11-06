@@ -9,9 +9,10 @@ providers:
   kubernetesCRD:
     allowCrossNamespace: true
 
-globalArguments:
+additionalArguments:
   - "--global.checknewversion=false"
   - "--global.sendanonymoususage=false"
+  - "--serversTransport.insecureSkipVerify=true"
 
 service:
   spec:
