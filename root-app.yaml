@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/ksiggins/homelab-gitops.git
-    targetRevision: appsets
+    targetRevision: main
     path: appsets
   destination:
     server: https://kubernetes.default.svc

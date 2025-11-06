@@ -9,7 +9,7 @@ spec:
   generators:
     - git:
         repoURL: https://github.com/ksiggins/homelab-gitops.git
-        revision: appsets
+        revision: main
         directories:
           - path: infra/*
   template:
@@ -20,7 +20,7 @@ spec:
       project: default
       source:
         repoURL: https://github.com/ksiggins/homelab-gitops.git
-        targetRevision: appsets
+        targetRevision: main
         path: '{{.path.path}}'
       destination:
         server: https://kubernetes.default.svc
