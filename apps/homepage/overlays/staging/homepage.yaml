@@ -191,12 +191,10 @@ spec:
               mountPath: /app/config/logs
       volumes:
         - name: config
-          emptyDir: {}
+          configMap:
+            name: homepage-config
         - name: logs
           emptyDir: {}
-        - configMap:
-            name: homepage-config
-          name: homepage-config
 ---
 # Source: homepage/templates/tests/test-connection.yaml
 apiVersion: v1
