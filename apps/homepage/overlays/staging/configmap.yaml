@@ -19,6 +19,9 @@ data:
       - Monitoring
       - Infrastructure
       - Networking
+    providers:
+      longhorn:
+        url: https://longhorn.staging.lab.supermorphic.com
 
   widgets.yaml: |
     - kubernetes:
@@ -42,6 +45,11 @@ data:
     - search:
         provider: duckduckgo
         target: _blank
+    - longhorn:
+        expanded: true
+        total: true
+        labels: true
+        nodes: true
 
   docker.yaml: ""
   proxmox.yaml: ""
@@ -50,9 +58,6 @@ data:
         - Github:
             - abbr: GH
               href: https://github.com/
-  services.yaml: |
-    - Infrastructure:
-        - Auto-discovered Services:
-            description: "Discovered via Traefik annotations"
+  services.yaml: ""
   custom.css: ""
   custom.js: ""
