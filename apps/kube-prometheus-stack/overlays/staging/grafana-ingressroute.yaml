@@ -14,6 +14,8 @@ metadata:
     gethomepage.dev/widget.type: "grafana"
     gethomepage.dev/widget.version: "2"
     gethomepage.dev/widget.url: "https://grafana.staging.lab.supermorphic.com"
+    gethomepage.dev/widget.username: "admin"
+    gethomepage.dev/widget.password: "Nd3$5vK7PeyyQ7*d27r0#XkVX2gE1BAzzZVEJERA"
 spec:
   entryPoints:
     - websecure
