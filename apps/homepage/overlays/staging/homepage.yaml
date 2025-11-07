@@ -156,9 +156,9 @@ spec:
               - ALL
             privileged: false
             readOnlyRootFilesystem: false
-            runAsGroup: 1000
-            runAsNonRoot: true
-            runAsUser: 1000
+            runAsGroup: 0
+            runAsNonRoot: false
+            runAsUser: 0
             seccompProfile:
               type: RuntimeDefault
           image: "ghcr.io/gethomepage/homepage:v1.5.0"
@@ -179,9 +179,9 @@ spec:
             {}
           env:
             - name: PUID
-              value: "1000"
+              value: "0"
             - name: PGID
-              value: "1000"
+              value: "0"
             - name: HOMEPAGE_ALLOWED_HOSTS
               value: homepage,homepage.homepage-staging,homepage.homepage-staging.svc,homepage.homepage-staging.svc.cluster,homepage.homepage-staging.svc.cluster.local,homepage.staging.lab.supermorphic.com
           volumeMounts:
@@ -212,9 +212,8 @@ spec:
             - mountPath: /app/config/logs
               name: logs
       volumes:
-        - name: homepage-config
-          configMap:
-            name: homepage-config
+        - name: config
+          emptyDir: {}
         - name: logs
           emptyDir: {}
 ---
