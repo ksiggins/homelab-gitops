@@ -56,8 +56,11 @@ data:
   bookmarks.yaml: |
     - Developer:
         - Github:
-            - abbr: GH
-              href: https://github.com/
+            - abbr: homelabe-gitops
+              href: https://github.com/ksiggins/homelab-gitops
+        - Github:
+            - abbr: homelabe-playbook
+              href: https://github.com/ksiggins/homelab-playbook
   services.yaml: ""
   custom.css: ""
   custom.js: ""
