@@ -2,7 +2,6 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: homepage
-  namespace: homepage-staging
   labels:
     app.kubernetes.io/name: homepage
 ---
@@ -45,13 +44,11 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: homepage
-    namespace: homepage-staging
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: homepage
-  namespace: homepage-staging
   labels:
     app.kubernetes.io/name: homepage
 spec:
@@ -68,7 +65,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: homepage
-  namespace: homepage-staging
   labels:
     app.kubernetes.io/name: homepage
 spec:
@@ -88,9 +84,6 @@ spec:
         - name: homepage
           image: ghcr.io/gethomepage/homepage:latest
           imagePullPolicy: Always
-          env:
-            - name: HOMEPAGE_ALLOWED_HOSTS
-              value: homepage.staging.lab.supermorphic.com
           ports:
             - name: http
               containerPort: 3000
@@ -99,38 +92,9 @@ spec:
             runAsGroup: 0
             runAsNonRoot: false
           volumeMounts:
-            - mountPath: /app/config/custom.js
-              name: homepage-config
-              subPath: custom.js
-            - mountPath: /app/config/custom.css
-              name: homepage-config
-              subPath: custom.css
-            - mountPath: /app/config/bookmarks.yaml
-              name: homepage-config
-              subPath: bookmarks.yaml
-            - mountPath: /app/config/docker.yaml
-              name: homepage-config
-              subPath: docker.yaml
-            - mountPath: /app/config/kubernetes.yaml
-              name: homepage-config
-              subPath: kubernetes.yaml
-            - mountPath: /app/config/services.yaml
-              name: homepage-config
-              subPath: services.yaml
-            - mountPath: /app/config/settings.yaml
-              name: homepage-config
-              subPath: settings.yaml
-            - mountPath: /app/config/widgets.yaml
-              name: homepage-config
-              subPath: widgets.yaml
-            - mountPath: /app/config/proxmox.yaml
-              name: homepage-config
-              subPath: proxmox.yaml
-            - mountPath: /app/config/logs
-              name: logs
+            - name: homepage-config
+              mountPath: /app/config
       volumes:
         - name: homepage-config
           configMap:
             name: homepage-config
-        - name: logs
-          emptyDir: {}

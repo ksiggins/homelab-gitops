@@ -1,0 +1,4 @@
+mode: cluster
+traefik: true
+ingress: true
+showPodCount: true

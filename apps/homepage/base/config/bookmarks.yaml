@@ -1,0 +1,9 @@
+- Developer:
+    - Homelab Playbook:
+        - abbr: GH
+          href: https://github.com/ksiggins/homelab-playbook
+          description: "Homelab playbook repo"
+    - Homelab GitOps:
+        - abbr: GH
+          href: https://github.com/ksiggins/homelab-gitops
+          description: "Homelab GitOps repo"

@@ -1,0 +1,6 @@
+title: "Homelab Dashboard"
+theme: dark
+layout:
+  - Monitoring
+  - Infrastructure
+  - Networking
