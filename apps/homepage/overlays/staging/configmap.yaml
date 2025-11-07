@@ -42,9 +42,6 @@ data:
         cpu: true
         memory: true
         network: default
-    - search:
-        provider: duckduckgo
-        target: _blank
     - longhorn:
         expanded: true
         total: true
@@ -56,11 +53,13 @@ data:
   bookmarks.yaml: |
     - Developer:
         - Github:
-            - abbr: homelabe-gitops
-              href: https://github.com/ksiggins/homelab-gitops
-        - Github:
-            - abbr: homelabe-playbook
+            - abbr: GH
               href: https://github.com/ksiggins/homelab-playbook
+              description: homelabe-playbook
+        - Github:
+            - abbr: GH
+              href: https://github.com/ksiggins/homelab-gitops
+              description: homelabe-gitops
   services.yaml: ""
   custom.css: ""
   custom.js: ""
