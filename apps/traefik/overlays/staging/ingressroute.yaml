@@ -3,6 +3,18 @@ kind: IngressRoute
 metadata:
   name: traefik-dashboard
   namespace: traefik-v2-staging
+  annotations:
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/name: "Traefik"
+    gethomepage.dev/description: "Ingress Controller & Edge Router"
+    gethomepage.dev/group: "Infrastructure"
+    gethomepage.dev/icon: "traefik-proxy.png"
+    gethomepage.dev/href: "https://traefik.staging.lab.supermorphic.com"
+    gethomepage.dev/pod-selector: "app.kubernetes.io/name=traefik"
+    gethomepage.dev/widget.type: "traefik"
+    gethomepage.dev/widget.url: "https://traefik.staging.lab.supermorphic.com"
+    gethomepage.dev/widget.username: "admin"
+    gethomepage.dev/widget.password: "iiTpM3hHxQdKmbvHv!U2"
 spec:
   entryPoints:
     - websecure
