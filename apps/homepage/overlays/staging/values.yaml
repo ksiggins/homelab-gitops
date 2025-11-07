@@ -1,3 +1,8 @@
 config:
   allowedHosts:
     - homepage.staging.lab.supermorphic.com
+
+volumes:
+  - name: homepage-config
+    configMap:
+      name: homepage-config

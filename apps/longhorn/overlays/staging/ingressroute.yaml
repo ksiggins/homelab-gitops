@@ -3,6 +3,14 @@ kind: IngressRoute
 metadata:
   name: longhorn-dashboard
   namespace: longhorn-system-staging
+  annotations:
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/name: "Longhorn"
+    gethomepage.dev/description: "Distributed block storage"
+    gethomepage.dev/group: "Infrastructure"
+    gethomepage.dev/icon: "si:longhorn"
+    gethomepage.dev/href: "https://longhorn.staging.lab.supermorphic.com"
+    gethomepage.dev/pod-selector: "app.kubernetes.io/name=longhorn-manager"
 spec:
   entryPoints:
     - websecure
