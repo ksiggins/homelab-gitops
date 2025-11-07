@@ -3,6 +3,16 @@ kind: IngressRoute
 metadata:
   name: grafana-dashboard
   namespace: monitoring-staging
+  annotations:
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/name: "Prometheus"
+    gethomepage.dev/description: "Monitoring and metrics collection"
+    gethomepage.dev/group: "Monitoring"
+    gethomepage.dev/icon: "si:prometheus"
+    gethomepage.dev/href: "https://prometheus.staging.lab.supermorphic.com"
+    gethomepage.dev/pod-selector: "app.kubernetes.io/name=prometheus"
+    gethomepage.dev/widget.type: "prometheus"
+    gethomepage.dev/widget.url: "https://prometheus.staging.lab.supermorphic.com"
 spec:
   entryPoints:
     - websecure
