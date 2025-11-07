@@ -4,7 +4,7 @@ metadata:
   name: homepage-dasbhoard-certificate
   namespace: homepage-staging
 spec:
-  secretName: homepage-server-tls
+  secretName: homepage-dashboard-tls
   dnsNames:
     - homepage.staging.lab.supermorphic.com
   issuerRef:
