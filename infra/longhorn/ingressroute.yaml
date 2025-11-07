@@ -10,17 +10,14 @@ metadata:
     gethomepage.dev/group: "Infrastructure"
     gethomepage.dev/icon: "longhorn.png"
     gethomepage.dev/href: "https://longhorn.staging.lab.supermorphic.com"
-    gethomepage.dev/pod-selector: "app.kubernetes.io/name=longhorn-manager"
-    gethomepage.dev/widget.type: "longhorn"
-    gethomepage.dev/widget.url: "https://longhorn.staging.lab.supermorphic.com"
+    gethomepage.dev/pod-selector: "app=longhorn-manager"
 spec:
   entryPoints:
     - websecure
   routes:
-    - kind: Rule
-      match: Host(`longhorn-homepage.local`)
+    - match: Host(`longhorn-homepage.local`)
+      kind: Rule
       services:
-        - kind: Service
-          name: longhorn-frontend
+        - name: longhorn-frontend
           namespace: longhorn-system
           port: 80
