@@ -1,7 +1,7 @@
 apiVersion: traefik.io/v1alpha1
-kind: IngressRoute
+kind: Ingress
 metadata:
-  name: longhorn-dashboard-homepage
+  name: longhorn-homepage-dummy
   namespace: longhorn-system
   annotations:
     gethomepage.dev/enabled: "true"
@@ -12,12 +12,14 @@ metadata:
     gethomepage.dev/href: "https://longhorn.staging.lab.supermorphic.com"
     gethomepage.dev/pod-selector: "app=longhorn-manager"
 spec:
-  entryPoints:
-    - websecure
-  routes:
-    - match: Host(`longhorn-homepage.local`)
-      kind: Rule
-      services:
-        - name: longhorn-frontend
-          namespace: longhorn-system
-          port: 80
+  rules:
+    - host: dummy.longhorn.homepage.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: longhorn-frontend
+                port:
+                  number: 80
