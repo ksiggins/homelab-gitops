@@ -16,8 +16,3 @@
     cpu: true
     memory: true
     network: default
-- longhorn:
-    expanded: true
-    total: true
-    labels: true
-    nodes: true
