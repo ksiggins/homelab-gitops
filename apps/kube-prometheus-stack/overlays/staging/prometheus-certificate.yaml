@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: prometheus-dashboard
+  namespace: monitoring-staging
+spec:
+  secretName: prometheus-dashboard-tls
+  dnsNames:
+    - prometheus.staging.lab.supermorphic.com
+  issuerRef:
+    name: letsencrypt-dns01-staging
+    kind: ClusterIssuer
