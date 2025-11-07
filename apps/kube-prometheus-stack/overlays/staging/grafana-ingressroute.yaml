@@ -3,6 +3,17 @@ kind: IngressRoute
 metadata:
   name: grafana-dashboard
   namespace: monitoring-staging
+  annotations:
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/name: "Grafana"
+    gethomepage.dev/description: "Observability and visualization dashboard"
+    gethomepage.dev/group: "Monitoring"
+    gethomepage.dev/icon: "grafana.png"
+    gethomepage.dev/href: "https://grafana.staging.lab.supermorphic.com"
+    gethomepage.dev/pod-selector: "app.kubernetes.io/name=grafana"
+    gethomepage.dev/widget.type: "grafana"
+    gethomepage.dev/widget.version: "2"
+    gethomepage.dev/widget.url: "https://grafana.staging.lab.supermorphic.com"
 spec:
   entryPoints:
     - websecure
