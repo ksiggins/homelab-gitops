@@ -187,10 +187,15 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /app/config
+            - name: homepage-config
+              mountPath: /app/config/
+              readOnly: true
             - name: logs
               mountPath: /app/config/logs
       volumes:
         - name: config
+          emptyDir: {}
+        - name: homepage-config
           configMap:
             name: homepage-config
         - name: logs
