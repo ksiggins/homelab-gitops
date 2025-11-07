@@ -8,7 +8,7 @@ metadata:
     gethomepage.dev/name: "Homepage"
     gethomepage.dev/description: "Unified homelab dashboard"
     gethomepage.dev/group: "Cluster Management"
-    gethomepage.dev/icon: "si:homepage"
+    gethomepage.dev/icon: "homepage.png"
     gethomepage.dev/href: "https://homepage.staging.lab.supermorphic.com"
     gethomepage.dev/pod-selector: "app.kubernetes.io/name=homepage"
 spec:
