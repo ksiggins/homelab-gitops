@@ -183,7 +183,7 @@ spec:
             - name: PGID
               value: "1000"
             - name: HOMEPAGE_ALLOWED_HOSTS
-              value: homepage,homepage.homepage-staging,homepage.homepage-staging.svc,homepage.homepage-staging.svc.cluster,homepage.homepage-staging.svc.cluster.local
+              value: homepage,homepage.homepage-staging,homepage.homepage-staging.svc,homepage.homepage-staging.svc.cluster,homepage.homepage-staging.svc.cluster.local,homepage.staging.lab.supermorphic.com
           volumeMounts:
             - name: config
               mountPath: /app/config

@@ -1,0 +1,3 @@
+config:
+  allowedHosts:
+    - homepage.staging.lab.supermorphic.com
