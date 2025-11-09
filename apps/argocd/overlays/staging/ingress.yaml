@@ -13,7 +13,8 @@ metadata:
     gethomepage.dev/pod-selector: "app.kubernetes.io/name=argocd-server"
     gethomepage.dev/widget.type: "argocd"
     gethomepage.dev/widget.url: "https://argocd.staging.lab.supermorphic.com"
-    gethomepage.dev/widget.key: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhcmdvY2QiLCJzdWIiOiJyZWFkb25seTphcGlLZXkiLCJuYmYiOjE3NjI3Mjg4MDIsImlhdCI6MTc2MjcyODgwMiwianRpIjoiZTg1Y2QzYmMtMWZiMi00YjlhLWIyMjAtZWNjNjgwMzMzN2I3In0.60xe3Ajr0NjSq7HytlY1j3jC3hofqAb5Gd7p5XvOL7c"spec:
+    gethomepage.dev/widget.key: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhcmdvY2QiLCJzdWIiOiJyZWFkb25seTphcGlLZXkiLCJuYmYiOjE3NjI3Mjg4MDIsImlhdCI6MTc2MjcyODgwMiwianRpIjoiZTg1Y2QzYmMtMWZiMi00YjlhLWIyMjAtZWNjNjgwMzMzN2I3In0.60xe3Ajr0NjSq7HytlY1j3jC3hofqAb5Gd7p5XvOL7c"
+spec:
   rules:
     - host: dummy.argocd.homepage.local
       http:
