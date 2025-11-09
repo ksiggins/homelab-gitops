@@ -8,7 +8,7 @@ metadata:
     gethomepage.dev/name: "Traefik"
     gethomepage.dev/description: "Ingress Controller & Edge Router"
     gethomepage.dev/group: "Infrastructure"
-    gethomepage.dev/icon: "traefik-proxy.png"
+    gethomepage.dev/icon: "traefik-proxy.svg"
     gethomepage.dev/href: "https://traefik.staging.lab.supermorphic.com/dashboard/"
     gethomepage.dev/pod-selector: "app.kubernetes.io/name=traefik"
     gethomepage.dev/widget.type: "traefik"

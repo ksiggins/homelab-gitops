@@ -8,7 +8,7 @@ metadata:
     gethomepage.dev/name: "Prometheus"
     gethomepage.dev/description: "Monitoring and metrics collection"
     gethomepage.dev/group: "Monitoring"
-    gethomepage.dev/icon: "prometheus.png"
+    gethomepage.dev/icon: "prometheus.svg"
     gethomepage.dev/href: "https://prometheus.staging.lab.supermorphic.com"
     gethomepage.dev/pod-selector: "app.kubernetes.io/name=prometheus"
     gethomepage.dev/widget.type: "prometheus"
