@@ -3,6 +3,17 @@ kind: IngressRoute
 metadata:
   name: argocd-server
   namespace: argocd-staging
+  annotations:
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/name: "Argo CD"
+    gethomepage.dev/description: "GitOps continuous delivery dashboard"
+    gethomepage.dev/group: "Infrastructure"
+    gethomepage.dev/icon: "argo-cd.svg"
+    gethomepage.dev/href: "https://argocd.staging.lab.supermorphic.com"
+    gethomepage.dev/pod-selector: "app.kubernetes.io/name=argocd-server"
+    gethomepage.dev/widget.type: "argocd"
+    gethomepage.dev/widget.url: "https://argocd.staging.lab.supermorphic.com"
+    gethomepage.dev/widget.key: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhcmdvY2QiLCJzdWIiOiJyZWFkb25seTphcGlLZXkiLCJuYmYiOjE3NjI3Mjg4MDIsImlhdCI6MTc2MjcyODgwMiwianRpIjoiZTg1Y2QzYmMtMWZiMi00YjlhLWIyMjAtZWNjNjgwMzMzN2I3In0.60xe3Ajr0NjSq7HytlY1j3jC3hofqAb5Gd7p5XvOL7c"
 spec:
   entryPoints:
     - websecure
