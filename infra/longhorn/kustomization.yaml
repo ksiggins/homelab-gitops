@@ -5,4 +5,4 @@ resources:
   - longhorn.yaml
   - ingress.yaml
 generators:
-  - nas-credentials.yaml
+  - ksops-generator.yaml

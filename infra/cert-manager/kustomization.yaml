@@ -6,4 +6,4 @@ resources:
   - letsencrypt-dns01-prod.yaml
   - letsencrypt-dns01-staging.yaml
 generators:
-  - cloudflare-secret.yaml
+  - ksops-generator.yaml

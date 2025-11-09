@@ -1,0 +1,4 @@
+apiVersion: viaduct.ai/v1
+kind: ksops
+files:
+  - cloudflare-secret.yaml
