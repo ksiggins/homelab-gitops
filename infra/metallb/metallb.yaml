@@ -2093,7 +2093,7 @@ spec:
       terminationGracePeriodSeconds: 2
       containers:
         - name: metallb-speaker
-          image: image: quay.io/metallb/speaker:v0.15.2
+          image: quay.io/metallb/speaker:v0.15.2
           imagePullPolicy: IfNotPresent
           securityContext:
             allowPrivilegeEscalation: false
