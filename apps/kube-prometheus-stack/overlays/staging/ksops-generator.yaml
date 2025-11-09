@@ -4,3 +4,4 @@ metadata:
   name: kube-prometheus-stack-staging-ksops-generator
 files:
   - auth-credentials.yaml
+  - alertmanager-secret.yaml

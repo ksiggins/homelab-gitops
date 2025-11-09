@@ -19,6 +19,7 @@ prometheus:
 
 alertmanager:
   alertmanagerSpec:
+    useExistingSecret: true
     storage:
       volumeClaimTemplate:
         spec:
