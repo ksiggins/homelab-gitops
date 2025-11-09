@@ -1,0 +1,4 @@
+- Infrastructure:
+    - Argo CD:
+        widget:
+          key: ${HOMEPAGE_ARGOCD_API_KEY}

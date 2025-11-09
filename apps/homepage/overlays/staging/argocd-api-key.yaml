@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Secret
+metadata:
+    name: argocd-api-key
+    namespace: homepage-staging
+type: Opaque
+stringData:
+    HOMEPAGE_ARGOCD_API_KEY: ENC[AES256_GCM,data:MVDFxzMWMEIYHGHIaevD+24NqCqz474v0pvXbFW4JV1f1eemFfHVMtYl2AAaSJxDfu0KfpBB1nWGE+v5wM/QMpy+5l6u8o+Oqm29vv0WyYVDtQXGTVUt/rsRFLYr43O2p24sexJ8sAtY2jjMouxYmNIUIGaoviCQqRehhmuAT9/mJLWJBYuu095NvKsnU/mVIJx/DbZDE7T84G/h7/EwYl+SQedzbyAGNe6Ro/12BKfAJTOwOr7xV0UELbhGv3eP9ORKpBb/sZ6NSV1Q/Zku20dME57kAho7P1UahSx1AVJ41tDOXYWIPM0T73t2kXfh,iv:JuiCyTjTyhvAK1kZfQjiRHBZxy10IvTf/YEvpj79t+0=,tag:vbjMvl+JfO8YcncgOdz8/g==,type:str]
+sops:
+    age:
+        - recipient: age13r239sgyet9tarzzvmy03ddv9v2u7xq9gu60kg47v97mxw86cgpqa4qr2u
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBRcGdJR0pLaENZWlloMnRT
+            SVJNZWwxajNyZXNYQWdYbWI0QzUrWUJjbkY0CnZ1TkZIa29TVm9QbGlaeGhxUW5s
+            Y25SREJnYWgwZUtwazU0TkN0enBLRlEKLS0tIE93NUhNZmVRblhyMU9jc2pvWGRj
+            dWNXYlBUSHhFaHprN1dleE9OOEJLT0kKfP7DwgA4yZ5mm23JM/ocsrCaYi0sRJBi
+            YYC+l2lcx6BuQTla4acYNfkMeXU+I9pueH05je3KGapJYVUcVIviTw==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2025-11-09T23:49:03Z"
+    mac: ENC[AES256_GCM,data:mPZVPkQTHWeEpWlI7gq/LpZO/7lMY7ATOTFyx5pyIKmZbJABvbqCNsANdRIwzYwQWRCjTzZBgIsv0X3G7LCdoeWQIG+zk2K0/40+h9sUNTNMvFv5O4TTVL9zCCU55ESUDx4TDg4/MA8UIKdA7v+MR+qQEXDHGUqMvgO27OEbflk=,iv:QNZfpzhT7i6EjAMqLVla2h4yYlshvjJ1+vro8JzBLRo=,tag:TqCijdC8Fusam79nl7n8NA==,type:str]
+    encrypted_regex: ^(data|stringData)$
+    version: 3.11.0

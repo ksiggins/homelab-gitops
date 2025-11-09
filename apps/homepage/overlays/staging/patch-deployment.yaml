@@ -10,3 +10,8 @@ spec:
           env:
             - name: HOMEPAGE_ALLOWED_HOSTS
               value: homepage.staging.lab.supermorphic.com
+            - name: HOMEPAGE_ARGOCD_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: argocd-api-key
+                  key: HOMEPAGE_ARGOCD_API_KEY
