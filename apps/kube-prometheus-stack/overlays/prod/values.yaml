@@ -10,6 +10,7 @@ grafana:
 
 prometheus:
   prometheusSpec:
+    serviceMonitorNamespaceSelector: {}
     storageSpec:
       volumeClaimTemplate:
         spec:
