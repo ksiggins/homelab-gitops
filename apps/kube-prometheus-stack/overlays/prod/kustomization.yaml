@@ -6,4 +6,4 @@ resources:
   - certificate.yaml
   - ingressroute.yaml
 generators:
-  - auth-credentials.yaml
+  - ksops-generator.yaml

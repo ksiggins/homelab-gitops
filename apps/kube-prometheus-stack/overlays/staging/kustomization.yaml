@@ -8,4 +8,4 @@ resources:
   - grafana-ingressroute.yaml
   - prometheus-ingressroute.yaml
 generators:
-  - auth-credentials.yaml
+  - ksops-generator.yaml

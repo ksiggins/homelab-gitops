@@ -1,0 +1,6 @@
+apiVersion: viaduct.ai/v1
+kind: ksops
+metadata:
+  name: kube-prometheus-stack-staging-ksops-generator
+files:
+  - auth-secret.yaml
