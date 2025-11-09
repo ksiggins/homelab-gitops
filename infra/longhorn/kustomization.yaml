@@ -3,6 +3,5 @@ kind: Kustomization
 resources:
   - namespace.yaml
   - longhorn.yaml
-  - ingress.yaml
 generators:
   - ksops-generator.yaml
