@@ -1,5 +1,6 @@
 title: "Homelab Dashboard"
 theme: dark
+iconStyle: theme
 layout:
   Monitoring:
     icon: mdi-list-status
