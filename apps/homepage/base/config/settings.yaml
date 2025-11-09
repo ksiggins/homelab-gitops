@@ -2,6 +2,6 @@ title: "Homelab Dashboard"
 theme: dark
 layout:
   Monitoring:
-    icon: mdi-F15AB
+    icon: mdi-list-status
   Infrastructure:
-    icon: mdi-F048B
+    icon: mdi-server
