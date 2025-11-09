@@ -1,0 +1,6 @@
+apiVersion: viaduct.ai/v1
+kind: ksops
+metadata:
+  name: metallb-ksops-generator
+files:
+  - memberlist-secret.yaml
