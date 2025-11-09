@@ -9,3 +9,5 @@ resources:
 patches:
   - path: patch-deployment.yaml
   - path: patch-clusterrolebinding.yaml
+generators:
+  - ksops-generator.yaml
