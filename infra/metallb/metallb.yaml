@@ -2064,12 +2064,12 @@ spec:
         helm.sh/chart: metallb-6.4.22
         app.kubernetes.io/component: speaker
     spec:
-      
+
       automountServiceAccountToken: true
       serviceAccountName: metallb-speaker
       affinity:
         podAffinity:
-          
+
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
             - podAffinityTerm:
@@ -2081,7 +2081,7 @@ spec:
                 topologyKey: kubernetes.io/hostname
               weight: 1
         nodeAffinity:
-          
+
       nodeSelector:
         "kubernetes.io/os": linux
       hostNetwork: true
@@ -2093,7 +2093,7 @@ spec:
       terminationGracePeriodSeconds: 2
       containers:
         - name: metallb-speaker
-          image: docker.io/bitnami/metallb-speaker:0.15.2-debian-12-r6
+          image: image: quay.io/metallb/speaker:v0.15.2
           imagePullPolicy: IfNotPresent
           securityContext:
             allowPrivilegeEscalation: false
@@ -2214,14 +2214,14 @@ spec:
         helm.sh/chart: metallb-6.4.22
         app.kubernetes.io/component: controller
     spec:
-      
+
       automountServiceAccountToken: true
       serviceAccountName: metallb-controller
       nodeSelector:
         "kubernetes.io/os": linux
       affinity:
         podAffinity:
-          
+
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
             - podAffinityTerm:
@@ -2233,7 +2233,7 @@ spec:
                 topologyKey: kubernetes.io/hostname
               weight: 1
         nodeAffinity:
-          
+
       securityContext:
         fsGroup: 1001
         fsGroupChangePolicy: Always
@@ -2241,7 +2241,7 @@ spec:
         sysctls: []
       containers:
         - name: metallb-controller
-          image: docker.io/bitnami/metallb-controller:0.15.2-debian-12-r7
+          image: quay.io/metallb/controller:v0.15.2
           imagePullPolicy: IfNotPresent
           securityContext:
             allowPrivilegeEscalation: false
