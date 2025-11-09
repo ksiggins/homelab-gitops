@@ -2064,12 +2064,12 @@ spec:
         helm.sh/chart: metallb-6.4.22
         app.kubernetes.io/component: speaker
     spec:
-
+      
       automountServiceAccountToken: true
       serviceAccountName: metallb-speaker
       affinity:
         podAffinity:
-
+          
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
             - podAffinityTerm:
@@ -2081,7 +2081,7 @@ spec:
                 topologyKey: kubernetes.io/hostname
               weight: 1
         nodeAffinity:
-
+          
       nodeSelector:
         "kubernetes.io/os": linux
       hostNetwork: true
@@ -2214,14 +2214,14 @@ spec:
         helm.sh/chart: metallb-6.4.22
         app.kubernetes.io/component: controller
     spec:
-
+      
       automountServiceAccountToken: true
       serviceAccountName: metallb-controller
       nodeSelector:
         "kubernetes.io/os": linux
       affinity:
         podAffinity:
-
+          
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
             - podAffinityTerm:
@@ -2233,7 +2233,7 @@ spec:
                 topologyKey: kubernetes.io/hostname
               weight: 1
         nodeAffinity:
-
+          
       securityContext:
         fsGroup: 1001
         fsGroupChangePolicy: Always
@@ -2513,22 +2513,3 @@ webhooks:
     resources:
     - l2advertisements
   sideEffects: None
----
-# Source: metallb/templates/speaker/secret.yaml
-apiVersion: v1
-kind: Secret
-metadata:
-  name: metallb-memberlist
-  namespace: "metallb-system"
-  labels:
-    app.kubernetes.io/instance: metallb
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: metallb
-    app.kubernetes.io/version: 0.15.2
-    helm.sh/chart: metallb-6.4.22
-    app.kubernetes.io/component: speaker
-  annotations:
-    "helm.sh/hook": "pre-install"
-    "helm.sh/hook-delete-policy": "before-hook-creation"
-data:
-  secretkey: "dE1GTDdXZ2tlcmVFNzFNM0VmMmFKQzI1ZDhWY3BuS0wyUDBaaGtQZkdDMWgyUTVkdEtrYkxQNTRpNzd2VENQbkx6NGRoTzBKOW1EMTg5czc5OVdtR1hHeThWTTVhdThJeXM2VWJSNGpVT2d5UjdnQ1V5QThWeTNoNHQ2djFGTnJFV01hU2NOM0dkZlhENzRXRmJvMjdKUnVZS0V0U3ZBVXJWZklMQ1RsSDM0R0JDV2RKT09vRjdxdnc5UXFwSVZJcUF5amt5NTA2SXBUYkV6RHJJSklzcHJNMHh1cUxiaUZ4NlJVS21UWHRpTWliT1VNVTZkYUs1WnhVUlNjM3l0dw=="

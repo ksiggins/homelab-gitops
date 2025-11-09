@@ -1,4 +1,13 @@
+global:
+  security:
+    allowInsecureImages: true
+
 controller:
+  image:
+    registry: quay.io
+    repository: metallb/controller
+    tag: v0.15.2
+
   metrics:
     enabled: true
     serviceMonitor:
@@ -7,9 +16,17 @@ controller:
         release: kube-prometheus-stack
 
 speaker:
+  image:
+    registry: quay.io
+    repository: metallb/speaker
+    tag: v0.15.2
+
   metrics:
     enabled: true
     serviceMonitor:
       enabled: true
       labels:
         release: kube-prometheus-stack
+
+  secretName: metallb-memberlist
+  secretKey: secretkey
