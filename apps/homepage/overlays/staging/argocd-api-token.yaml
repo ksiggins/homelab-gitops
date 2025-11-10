@@ -1,23 +1,10 @@
 apiVersion: v1
 kind: Secret
 metadata:
-    name: argocd-api-token
-    namespace: homepage-staging
+  name: argocd-api-token
+  namespace: homepage-staging
+  annotations:
+    reflector.v1.k8s.emberstack.com/reflects: "argocd/argocd-api-token"
 type: Opaque
 stringData:
-    api-token: ENC[AES256_GCM,data:zypXT71LlQPvV9yMm+S9u0/tSN+IxFSpD0qUhmrZ1Lm9PBv96hLHybdV8eCHNBQV6GBeNEFHr7fjAVPyYdNuqW10I7Ms5JGDpTog84BvqgX7GQYRpkSpEicsqDG46tIj2VAKzazQIsHo2tbjmlnF5Ub0Mthy/kB1qjzkvxtqsSYsuWSbfnrp7EmcIkOcWRO7++jpTT+JAOnNXLCMWhUod893afcpN20FDfnQfypdubeQXX4gZQy8K20BgLzT3sPGGZ/aIo2iLJKqsbdhuLnjvqpkHbBgblhw9GPblnCqNGOSytTCrH6YoYRE2YcT06uT,iv:yM91pWIFRKmm0V5xVFyMaUbaGRtYVj2XmFuJNJHu07s=,tag:wFlESFkFf18Xz/qv/NhExw==,type:str]
-sops:
-    age:
-        - recipient: age13r239sgyet9tarzzvmy03ddv9v2u7xq9gu60kg47v97mxw86cgpqa4qr2u
-          enc: |
-            -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSA4R0hiOFVvKzlxVE9CTHNI
-            aWNTV3dwV0xUV2VhR3dLWXRRK2ZhbGxyZUZJCmxOQzJaa0ovc0xER0Nud2pqd0Y1
-            SXU3TGdtZUZ0K044K2hvRkRIRU9tOVUKLS0tIHNHbkUyeXNBQlVHRGlnR0liM055
-            VSt6SWdIb3RpVnNFNUY1c2IvdklzSlUKlUT3SYB8NxV9OI2IlDa6p7noff9rYRo/
-            E6n7rIs7TjITEOcvcNfm7o3uNSu+SO5k1oFI4km1opHNBRvpdngV0g==
-            -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-11-10T00:20:27Z"
-    mac: ENC[AES256_GCM,data:In7nSEGwbujNr/y8rGhYev+Sfy9vfhzT5gtyvT8m16W89WizlP+XgSjI9h5PktDyqenZF1bmlsFKnXAbSj06y3glZWD9vla4oV/JiOSid5v+HLu86DSA9sEsXEfVXvAZFbMvN/CyVeblGldkFNSaHHdiMDkJl7aZhGtbBtpI9TA=,iv:PHOrBkkm9P+b2mfm/OA06yMccKc7DYGicruuKzqVC5o=,tag:qXlxY5BU7Nn94OTGjb/VYQ==,type:str]
-    encrypted_regex: ^(data|stringData)$
-    version: 3.11.0
+  api-token: ""
