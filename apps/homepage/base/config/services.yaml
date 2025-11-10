@@ -2,8 +2,7 @@
     - Argo CD:
         icon: argo-cd.svg
         description: GitOps continuous delivery dashboard
-        server: argocd.staging.lab.supermorphic.com
-        container: argocd-server
+        href: https://argocd.staging.lab.supermorphic.com
         widget:
           type: argocd
           url: https://argocd.staging.lab.supermorphic.com
