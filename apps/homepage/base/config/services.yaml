@@ -9,4 +9,4 @@
         widget:
           type: argocd
           url: https://argocd.staging.lab.supermorphic.com
-          key: ${HOMEPAGE_ARGOCD_API_KEY}
+          key: {{HOMEPAGE_ARGOCD_API_KEY}}
