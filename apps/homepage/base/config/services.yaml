@@ -1,9 +1,0 @@
-- Infrastructure:
-    - Argo CD:
-        icon: argo-cd.svg
-        description: GitOps continuous delivery dashboard
-        href: https://argocd.staging.lab.supermorphic.com
-        widget:
-          type: argocd
-          url: https://argocd.staging.lab.supermorphic.com
-          key: {{HOMEPAGE_VAR_ARGOCD_API_TOKEN}}
