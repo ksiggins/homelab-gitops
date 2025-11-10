@@ -2,10 +2,8 @@
     - Argo CD:
         icon: argo-cd.svg
         description: GitOps continuous delivery dashboard
-        href: https://argocd.staging.lab.supermorphic.com
-        podSelector:
-          namespace: argocd
-          selector: app.kubernetes.io/name=argocd-server
+        server: argocd.staging.lab.supermorphic.com
+        container: argocd-server
         widget:
           type: argocd
           url: https://argocd.staging.lab.supermorphic.com
