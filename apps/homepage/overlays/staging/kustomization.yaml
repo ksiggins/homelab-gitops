@@ -3,11 +3,10 @@ kind: Kustomization
 namespace: homepage-staging
 resources:
   - namespace.yaml
+  - argocd-api-token.yaml
   - ../../base
   - certificate.yaml
   - ingressroute.yaml
 patches:
   - path: patch-deployment.yaml
   - path: patch-clusterrolebinding.yaml
-generators:
-  - ksops-generator.yaml
