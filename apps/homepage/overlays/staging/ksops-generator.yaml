@@ -3,4 +3,4 @@ kind: ksops
 metadata:
   name: homepage-staging-ksops-generator
 files:
-  - argocd-api-key.yaml
+  - argocd-api-token.yaml
