@@ -30,3 +30,9 @@ spec:
           selfHeal: true
         syncOptions:
           - ServerSideApply=true
+      ignoreDifferences:
+        - group: ""
+          kind: Secret
+          jqPathExpressions:
+            - .metadata.annotations["reflector.v1.k8s.emberstack.com/reflects"]
+            - .data
