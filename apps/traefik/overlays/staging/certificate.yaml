@@ -1,10 +1,10 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: traefik-dashboard
+  name: traefik
   namespace: traefik-v2-staging
 spec:
-  secretName: traefik-dashboard-tls
+  secretName: traefik-tls
   dnsNames:
     - traefik.staging.lab.supermorphic.com
   issuerRef:
