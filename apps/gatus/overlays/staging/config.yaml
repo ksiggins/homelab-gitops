@@ -20,10 +20,12 @@ endpoints:
     interval: 30s
     client:
       insecure: true
+      ignore-redirect: true
       headers:
         Authorization: "Basic YWRtaW46aWlUcE0zaEh4UWRLbWJ2SHYhVTI="
     conditions:
       - "[STATUS] == 200"
+      - "len([BODY]) >= 0"
     group: Infrastructure
 
   - name: argocd
