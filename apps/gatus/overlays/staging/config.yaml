@@ -10,22 +10,25 @@ security:
     password-bcrypt-base64: "JDJ5JDA5JEUuVTF3RXpBWEJ5YUxpU2RzUU5wT09TTzNDYUtvMVc4dm05WmMvR3dkRGxxb0gwM0J4TEdT"
 
 ui:
-  title: "Homelab Service Status"
-  header: "Gatus - Supermorphic Lab"
+  title: "Homelab"
+  header: "Homelab"
   theme: dark
 
 endpoints:
   - name: traefik-dashboard
     url: https://traefik.staging.lab.supermorphic.com/ping
     interval: 30s
+    client:
+      insecure: true
     conditions:
       - "[STATUS] == 200"
-    alerts: []
     group: Infrastructure
 
   - name: argocd
     url: https://argocd.staging.lab.supermorphic.com
     interval: 1m
+    client:
+      insecure: true
     conditions:
       - "[STATUS] == 200"
     group: GitOps
@@ -33,6 +36,8 @@ endpoints:
   - name: grafana
     url: https://grafana.staging.lab.supermorphic.com/api/health
     interval: 1m
+    client:
+      insecure: true
     conditions:
       - "[STATUS] == 200"
       - "[BODY].database == 'ok'"
@@ -41,6 +46,8 @@ endpoints:
   - name: prometheus
     url: https://prometheus.staging.lab.supermorphic.com/-/healthy
     interval: 1m
+    client:
+      insecure: true
     conditions:
       - "[STATUS] == 200"
     group: Observability
@@ -48,6 +55,8 @@ endpoints:
   - name: longhorn
     url: https://longhorn.staging.lab.supermorphic.com
     interval: 2m
+    client:
+      insecure: true
     conditions:
       - "[STATUS] == 200"
     group: Storage
@@ -55,6 +64,8 @@ endpoints:
   - name: homepage
     url: https://homepage.staging.lab.supermorphic.com
     interval: 1m
+    client:
+      insecure: true
     conditions:
       - "[STATUS] == 200"
     group: Dashboards
