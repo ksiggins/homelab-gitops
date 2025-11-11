@@ -128,6 +128,10 @@ spec:
     app.kubernetes.io/name: traefik
     app.kubernetes.io/instance: traefik-traefik-v2-staging
   ports:
+  - port: 8082
+    name: ping
+    targetPort: ping
+    protocol: TCP
   - port: 80
     name: web
     targetPort: web
@@ -207,6 +211,9 @@ spec:
         - name: metrics
           containerPort: 9100
           protocol: TCP
+        - name: ping
+          containerPort: 8082
+          protocol: TCP
         - name: traefik
           containerPort: 8080
           protocol: TCP
@@ -229,6 +236,7 @@ spec:
             mountPath: /tmp
         args:
           - "--entryPoints.metrics.address=:9100/tcp"
+          - "--entryPoints.ping.address=:8082/tcp"
           - "--entryPoints.traefik.address=:8080/tcp"
           - "--entryPoints.web.address=:8000/tcp"
           - "--entryPoints.websecure.address=:8443/tcp"

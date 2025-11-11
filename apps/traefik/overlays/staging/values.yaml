@@ -28,3 +28,9 @@ ports:
         to: websecure
         scheme: https
         permanent: true
+  ping:
+    port: 8082
+    expose:
+      default: true
+    exposedPort: 8082
+    protocol: TCP
