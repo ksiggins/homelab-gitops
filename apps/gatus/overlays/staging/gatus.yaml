@@ -123,7 +123,7 @@ spec:
             - configMapRef:
                 name: gatus
             - secretRef:
-                name: gatus-admin-secret
+                name: gatus-admin-credentials
           readinessProbe:
             httpGet:
               path: /health

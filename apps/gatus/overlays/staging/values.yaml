@@ -5,7 +5,7 @@ env:
 
 envFrom:
   - secretRef:
-      name: gatus-admin-secret
+      name: gatus-admin-credentials
 
 persistence:
   enabled: true
