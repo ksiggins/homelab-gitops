@@ -14,7 +14,7 @@ ui:
   header: "Gatus - Supermorphic Lab"
   theme: dark
 
-services:
+endpoints:
   - name: traefik-dashboard
     url: https://traefik.staging.lab.supermorphic.com/ping
     interval: 30s
