@@ -1,0 +1,74 @@
+metrics: true
+
+storage:
+  type: sqlite
+  path: /data/data.db
+
+security:
+  basic:
+    username: "${ADMIN_USERNAME}"
+    password: "${ADMIN_PASSWORD}"
+
+ui:
+  title: "Homelab Service Status"
+  header: "Gatus - Supermorphic Lab"
+  theme: dark
+
+services:
+  - name: traefik-dashboard
+    url: https://traefik.staging.lab.supermorphic.com/ping
+    interval: 30s
+    conditions:
+      - "[STATUS] == 200"
+    alerts: []
+    group: Infrastructure
+
+  - name: argocd
+    url: https://argocd.staging.lab.supermorphic.com
+    interval: 1m
+    conditions:
+      - "[STATUS] == 200"
+    group: GitOps
+
+  - name: grafana
+    url: https://grafana.staging.lab.supermorphic.com/api/health
+    interval: 1m
+    conditions:
+      - "[STATUS] == 200"
+      - "[BODY].database == 'ok'"
+    group: Observability
+
+  - name: prometheus
+    url: https://prometheus.staging.lab.supermorphic.com/-/healthy
+    interval: 1m
+    conditions:
+      - "[STATUS] == 200"
+    group: Observability
+
+  - name: longhorn
+    url: https://longhorn.staging.lab.supermorphic.com
+    interval: 2m
+    conditions:
+      - "[STATUS] == 200"
+    group: Storage
+
+  - name: homepage
+    url: https://homepage.staging.lab.supermorphic.com
+    interval: 1m
+    conditions:
+      - "[STATUS] == 200"
+    group: Dashboards
+
+  - name: cert-manager-staging-api
+    url: https://acme-v02.api.letsencrypt.org/
+    interval: 10m
+    conditions:
+      - "[STATUS] == 200"
+    group: External
+
+  - name: kubernetes-api
+    url: tcp://kubernetes.default.svc:6443
+    interval: 1m
+    conditions:
+      - "[CONNECTED] == true"
+    group: Internal

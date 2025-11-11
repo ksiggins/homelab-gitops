@@ -13,6 +13,8 @@ additionalArguments:
   - "--global.checknewversion=false"
   - "--global.sendanonymoususage=false"
   - "--serversTransport.insecureSkipVerify=true"
+  - "--ping=true"
+  - "--ping.entryPoint=websecure"
 
 service:
   spec:

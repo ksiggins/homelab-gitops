@@ -1,0 +1,20 @@
+env:
+  GATUS_CONFIG_PATH: /config/config.yaml
+  GATUS_LOG_LEVEL: DEBUG
+  TZ: America/Denver
+
+envFrom:
+  - secretRef:
+      name: gatus-admin-secret
+
+persistence:
+  enabled: true
+  size: 1Gi
+
+serviceMonitor:
+  enabled: true
+  namespace: monitoring-staging
+  interval: 1m
+  labels:
+    release: prometheus
+  scrapeTimeout: 30s

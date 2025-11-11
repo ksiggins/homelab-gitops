@@ -1,0 +1,26 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: gatus
+  namespace: gatus-staging
+  annotations:
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/name: "Gatus"
+    gethomepage.dev/description: "Automated uptime and endpoint monitoring"
+    gethomepage.dev/group: "Monitoring"
+    gethomepage.dev/icon: "gatus.svg"
+    gethomepage.dev/href: "https://gatus.staging.lab.supermorphic.com/"
+    gethomepage.dev/pod-selector: "app.kubernetes.io/name=gatus"
+    gethomepage.dev/widget.type: "gatus"
+    gethomepage.dev/widget.url: "https://gatus.staging.lab.supermorphic.com"
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`gatus.staging.lab.supermorphic.com`)
+      kind: Rule
+      services:
+        - name: gatus
+          port: 3001
+  tls:
+    secretName: gatus-tls

@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: gatus
+  namespace: gatus-staging
+spec:
+  secretName: gatus-tls
+  dnsNames:
+    - gatus.staging.lab.supermorphic.com
+  issuerRef:
+    name: letsencrypt-dns01-staging
+    kind: ClusterIssuer

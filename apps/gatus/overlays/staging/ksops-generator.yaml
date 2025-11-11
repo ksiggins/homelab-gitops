@@ -1,0 +1,6 @@
+apiVersion: viaduct.ai/v1
+kind: ksops
+metadata:
+  name: gatus-staging-ksops-generator
+files:
+  - admin-credentials.yaml
