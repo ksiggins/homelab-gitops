@@ -16,7 +16,7 @@ ui:
 
 endpoints:
   - name: traefik-dashboard
-    url: http://traefik.traefik-v2-staging.svc.cluster.local:8080/ping
+    url: http://traefik.staging.lab.supermorphic.com:8080/ping
     interval: 30s
     conditions:
       - "[STATUS] == 200"
