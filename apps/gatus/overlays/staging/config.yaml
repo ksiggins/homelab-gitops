@@ -7,7 +7,7 @@ storage:
 security:
   basic:
     username: "admin"
-    password: "test"
+    password-bcrypt-base64: "JDJ5JDA5JEUuVTF3RXpBWEJ5YUxpU2RzUU5wT09TTzNDYUtvMVc4dm05WmMvR3dkRGxxb0gwM0J4TEdT"
 
 ui:
   title: "Homelab Service Status"
