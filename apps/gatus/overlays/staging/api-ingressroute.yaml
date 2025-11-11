@@ -1,0 +1,14 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: gatus-api
+  namespace: gatus-staging
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`gatus-api.staging.lab.supermorphic.com`) && PathPrefix(`/api/`)
+      kind: Rule
+      services:
+        - name: gatus
+          port: 80
