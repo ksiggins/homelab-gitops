@@ -16,10 +16,12 @@ ui:
 
 endpoints:
   - name: traefik-dashboard
-    url: https://traefik.staging.lab.supermorphic.com
+    url: https://traefik.staging.lab.supermorphic.com/dashboard/
     interval: 30s
     client:
       insecure: true
+      headers:
+        Authorization: "Basic ${TRAEFIK_BASIC_AUTH}"
     conditions:
       - "[STATUS] == 200"
     group: Infrastructure
@@ -76,14 +78,3 @@ endpoints:
     conditions:
       - "[STATUS] == 200"
     group: External
-
-  - name: kubernetes-api
-    url: https://kubernetes.default.svc:443/livez
-    interval: 1m
-    client:
-      insecure: true
-      headers:
-        Authorization: "Bearer $(cat /var/run/secrets/kubernetes.io/serviceaccount/token)"
-    conditions:
-      - "[STATUS] == 200"
-    group: Internal

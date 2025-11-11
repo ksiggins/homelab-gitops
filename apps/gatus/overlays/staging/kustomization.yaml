@@ -7,6 +7,9 @@ resources:
   - certificate.yaml
   - ingressroute.yaml
 
+generators:
+  - ksops-generator.yaml
+
 configMapGenerator:
   - name: gatus
     namespace: gatus-staging
