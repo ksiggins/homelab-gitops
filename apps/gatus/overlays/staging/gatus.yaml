@@ -122,8 +122,6 @@ spec:
           envFrom:
             - configMapRef:
                 name: gatus
-            - secretRef:
-                name: gatus-admin-credentials
           readinessProbe:
             httpGet:
               path: /health

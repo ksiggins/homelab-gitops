@@ -3,10 +3,6 @@ env:
   GATUS_LOG_LEVEL: DEBUG
   TZ: America/Denver
 
-envFrom:
-  - secretRef:
-      name: gatus-admin-credentials
-
 persistence:
   enabled: true
   size: 1Gi
