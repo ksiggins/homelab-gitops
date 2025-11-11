@@ -122,6 +122,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: gatus
+            - secretRef:
+                name: traefik-auth-credentials
           readinessProbe:
             httpGet:
               path: /health
