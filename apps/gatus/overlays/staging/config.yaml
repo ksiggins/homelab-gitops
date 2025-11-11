@@ -16,16 +16,12 @@ ui:
 
 endpoints:
   - name: traefik-dashboard
-    url: https://traefik.staging.lab.supermorphic.com/dashboard/
+    url: http://traefik:8082/ping
     interval: 30s
     client:
       insecure: true
-      ignore-redirect: true
-      headers:
-        Authorization: "Basic YWRtaW46aWlUcE0zaEh4UWRLbWJ2SHYhVTI="
     conditions:
       - "[STATUS] == 200"
-      - "len([BODY]) >= 0"
     group: Infrastructure
 
   - name: argocd
