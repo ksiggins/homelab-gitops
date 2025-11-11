@@ -10,8 +10,21 @@ spec:
           env:
             - name: HOMEPAGE_ALLOWED_HOSTS
               value: homepage.staging.lab.supermorphic.com
+
             - name: HOMEPAGE_VAR_ARGOCD_API_TOKEN
               valueFrom:
                 secretKeyRef:
                   name: argocd-api-token
                   key: api-token
+
+            - name: HOMEPAGE_VAR_GATUS_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: gatus-admin-credentials
+                  key: username
+
+            - name: HOMEPAGE_VAR_GATUS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: gatus-admin-credentials
+                  key: password
