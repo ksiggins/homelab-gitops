@@ -10,7 +10,7 @@ metadata:
     gethomepage.dev/group: "Monitoring"
     gethomepage.dev/icon: "uptime-kuma.svg"
     gethomepage.dev/href: "https://uptime-kuma.staging.lab.supermorphic.com/"
-    gethomepage.dev/pod-selector: "app.kubernetes.io/name=uptime-kuma"
+    gethomepage.dev/pod-selector: "io.kompose.service=uptime-kuma"
     gethomepage.dev/widget.type: "uptimekuma"
     gethomepage.dev/widget.url: "https://uptime-kuma.staging.lab.supermorphic.com"
     gethomepage.dev/widget.slug: "homelab"
