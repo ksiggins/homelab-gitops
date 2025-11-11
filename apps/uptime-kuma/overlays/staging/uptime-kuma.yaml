@@ -1,0 +1,78 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations: {}
+  labels:
+    io.kompose.service: uptime-kuma
+    app.kubernetes.io/name: uptime-kuma
+    app.kubernetes.io/instance: uptime-kuma
+    app.kubernetes.io/managed-by: kompose
+    app.kubernetes.io/version: "2.0.2"
+  name: uptime-kuma
+  namespace: uptime-kuma-staging
+spec:
+  ports:
+    - name: "3001"
+      port: 3001
+      targetPort: 3001
+  selector:
+    io.kompose.service: uptime-kuma
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations: {}
+  labels:
+    io.kompose.service: uptime-kuma
+    app.kubernetes.io/name: uptime-kuma
+    app.kubernetes.io/instance: uptime-kuma
+    app.kubernetes.io/managed-by: kompose
+    app.kubernetes.io/version: "2.0.2"
+  name: uptime-kuma
+  namespace: uptime-kuma-staging
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: uptime-kuma
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations: {}
+      labels:
+        io.kompose.service: uptime-kuma
+    spec:
+      containers:
+        - image: louislam/uptime-kuma:2
+          name: uptime-kuma
+          ports:
+            - containerPort: 3001
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /app/data
+              name: uptime-kuma-claim0
+      restartPolicy: Always
+      volumes:
+        - name: uptime-kuma-claim0
+          persistentVolumeClaim:
+            claimName: uptime-kuma-claim0
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    io.kompose.service: uptime-kuma-claim0
+    app.kubernetes.io/name: uptime-kuma
+    app.kubernetes.io/instance: uptime-kuma
+    app.kubernetes.io/managed-by: kompose
+    app.kubernetes.io/version: "2.0.2"
+  name: uptime-kuma-claim0
+  namespace: uptime-kuma-staging
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi

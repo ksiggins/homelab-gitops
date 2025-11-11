@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: uptime-kuma
+  namespace: uptime-kuma-staging
+spec:
+  secretName: uptime-kuma-tls
+  dnsNames:
+    - uptime-kuma.staging.lab.supermorphic.com
+  issuerRef:
+    name: letsencrypt-dns01-staging
+    kind: ClusterIssuer
