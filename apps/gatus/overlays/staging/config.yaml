@@ -4,11 +4,6 @@ storage:
   type: sqlite
   path: /data/data.db
 
-security:
-  basic:
-    username: admin
-    password-bcrypt-base64: JDJ5JDA5JFBsWC5ySzdFMmswcWVJTG03ZEp1LmVpRXduZlVOSGQxS25uNUgyNXc3NGNKUFI3UGpPZUlT
-
 ui:
   title: "Homelab"
   header: "Homelab"
