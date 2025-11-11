@@ -6,6 +6,7 @@ resources:
   - gatus.yaml
   - certificate.yaml
   - ingressroute.yaml
+  - api-ingressroute.yaml
 
 configMapGenerator:
   - name: gatus
