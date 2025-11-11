@@ -21,6 +21,6 @@ spec:
       kind: Rule
       services:
         - name: gatus
-          port: 3001
+          port: 8080
   tls:
     secretName: gatus-tls
