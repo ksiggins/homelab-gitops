@@ -254,7 +254,6 @@ spec:
           - "--global.sendanonymoususage=false"
           - "--serversTransport.insecureSkipVerify=true"
           - "--ping=true"
-          - "--ping.entryPoint=websecure"
         env:
           - name: POD_NAME
             valueFrom:
