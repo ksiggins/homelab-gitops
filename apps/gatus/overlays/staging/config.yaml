@@ -6,8 +6,8 @@ storage:
 
 security:
   basic:
-    username: "${ADMIN_USERNAME}"
-    password: "${ADMIN_PASSWORD}"
+    username: "admin"
+    password: "test"
 
 ui:
   title: "Homelab Service Status"
