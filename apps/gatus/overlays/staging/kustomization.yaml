@@ -12,5 +12,6 @@ configMapGenerator:
     namespace: gatus-staging
     files:
       - config.yaml
+    behavior: replace
     options:
       disableNameSuffixHash: true
