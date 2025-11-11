@@ -14,7 +14,3 @@ serviceMonitor:
   labels:
     release: prometheus
   scrapeTimeout: 30s
-
-envFrom:
-  - secretRef:
-      name: traefik-auth-credentials
