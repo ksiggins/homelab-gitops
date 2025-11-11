@@ -16,10 +16,8 @@ ui:
 
 endpoints:
   - name: traefik-dashboard
-    url: http://traefik:8082/ping
+    url: http://traefik.traefik-v2-staging.svc.cluster.local:8080/ping
     interval: 30s
-    client:
-      insecure: true
     conditions:
       - "[STATUS] == 200"
     group: Infrastructure
