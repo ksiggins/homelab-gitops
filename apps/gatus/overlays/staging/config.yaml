@@ -21,7 +21,7 @@ endpoints:
     client:
       insecure: true
       headers:
-        Authorization: "Basic ${TRAEFIK_BASIC_AUTH}"
+        Authorization: "Basic YWRtaW46aWlUcE0zaEh4UWRLbWJ2SHYhVTI="
     conditions:
       - "[STATUS] == 200"
     group: Infrastructure
