@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: gatus-config
+  name: gatus
   namespace: gatus-staging
 data:
   config.yaml: |
