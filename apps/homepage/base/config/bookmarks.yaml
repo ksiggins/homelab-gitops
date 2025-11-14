@@ -14,4 +14,4 @@
       icon: docker.svg
   - Helm Charts:
     - href: https://artifacthub.io
-      icon: helm.svg
+      icon: artifacthub.svg
