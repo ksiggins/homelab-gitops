@@ -1,7 +1,17 @@
-- Developer:
-    - Homelab Playbook:
-        - abbr: GH
-          href: https://github.com/ksiggins/homelab-playbook
-    - Homelab GitOps:
-        - abbr: GH
-          href: https://github.com/ksiggins/homelab-gitops
+- Development:
+  - Homelab Playbook:
+    - href: https://github.com/ksiggins/homelab-playbook
+      icon: github.svg
+  - Homelab GitOps:
+    - href: https://github.com/ksiggins/homelab-gitops
+      icon: github.svg
+- Cloud Services:
+  - Cloudflare:
+    - href: https://dash.cloudflare.com
+      icon: cloudflare.svg
+  - Docker Hub:
+    - href: https://hub.docker.com
+      icon: docker.svg
+  - Helm Charts:
+    - href: https://artifacthub.io
+      icon: helm.svg
