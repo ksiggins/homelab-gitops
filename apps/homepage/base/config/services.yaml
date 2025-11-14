@@ -1,6 +1,7 @@
-- Networking:
-  - name: Cable Modem
-    description: Arris S34 DOCSIS 3.1
-    href: https://192.168.100.1/Login.html
-    icon: arris.svg
-    ping: 192.168.100.1
+- Group A:
+    - Service A:
+        href: http://localhost/
+
+- Group B:
+    - Service B:
+        href: http://localhost/
