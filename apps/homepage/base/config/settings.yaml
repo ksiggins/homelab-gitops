@@ -1,7 +1,3 @@
 title: "Homelab Dashboard"
 theme: dark
 iconStyle: theme
-layout:
-  Networking:
-  Infrastructure:
-  Monitoring:

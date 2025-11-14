@@ -1,10 +1,10 @@
 - Development:
   - Homelab Playbook:
     - href: https://github.com/ksiggins/homelab-playbook
-      icon: github.svg
+      icon: github-light.svg
   - Homelab GitOps:
     - href: https://github.com/ksiggins/homelab-gitops
-      icon: github.svg
+      icon: github-light.svg
 - Cloud Services:
   - Cloudflare:
     - href: https://dash.cloudflare.com
