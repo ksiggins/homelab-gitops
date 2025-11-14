@@ -28,4 +28,7 @@
   - Cable Modem:
     - href: https://192.168.100.1/Login.html
       icon: router.svg
+  - Room Alert Monitor:
+    - href: http://192.168.30.6
+      icon: mdi-thermometer-#D32F2F
 
