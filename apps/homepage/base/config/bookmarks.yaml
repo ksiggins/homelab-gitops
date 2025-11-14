@@ -15,8 +15,17 @@
   - Helm Charts:
     - href: https://artifacthub.io
       icon: artifacthub.svg
-- LAN:
+- Local Area Network:
+  - Unifi Network:
+    - href: https://192.168.0.1
+      icon: unifi-controller.png
+  - Unifi Protect:
+    - href: https://192.168.0.2
+      icon: unifi-protect.png
+  - Unifi Drive:
+    - href: https://192.168.0.3
+      icon: unifi-drive.png
   - Cable Modem:
     - href: https://192.168.100.1/Login.html
-      icon: router.png
+      icon: router.svg
 
