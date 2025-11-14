@@ -15,3 +15,8 @@
   - Helm Charts:
     - href: https://artifacthub.io
       icon: artifacthub.svg
+- LAN:
+  - Cable Modem:
+    - href: https://192.168.100.1/Login.html
+      icon: router.png
+
