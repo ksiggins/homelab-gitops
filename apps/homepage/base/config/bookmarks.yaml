@@ -30,5 +30,5 @@
       icon: router.svg
   - Room Alert Monitor:
     - href: http://192.168.30.6
-      icon: mdi-thermometer-#D32F2F
+      icon: mdi-thermometer-low-#F44336
 
