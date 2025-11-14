@@ -1,3 +1,4 @@
 - Networking:
-    - Cable Modem:
-        href: http://localhost/
+  - Cable Modem:
+    href: http://localhost/
+    icon: arris.png
