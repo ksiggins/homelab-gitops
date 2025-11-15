@@ -8,13 +8,14 @@ grafana:
 
 prometheus:
   prometheusSpec:
+    retention: 7d
     serviceMonitorNamespaceSelector: {}
     storageSpec:
       volumeClaimTemplate:
         spec:
           resources:
             requests:
-              storage: 2Gi
+              storage: 20Gi
           storageClassName: longhorn
 
 alertmanager:

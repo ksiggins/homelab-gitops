@@ -76115,7 +76115,7 @@ spec:
   listenLocal: false
   enableOTLPReceiver: false
   enableAdminAPI: false
-  retention: "10d"
+  retention: "7d"
   tsdb:
     outOfOrderTimeWindow: 0s
   walCompression: true
@@ -76158,7 +76158,7 @@ spec:
       spec:
         resources:
           requests:
-            storage: 2Gi
+            storage: 20Gi
         storageClassName: longhorn
   affinity:
     podAntiAffinity:
