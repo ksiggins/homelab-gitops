@@ -27,6 +27,13 @@ prometheus:
             requests:
               storage: 20Gi
           storageClassName: longhorn
+    topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: kubernetes.io/hostname
+        whenUnsatisfiable: ScheduleAnyway
+        labelSelector:
+          matchLabels:
+            app.kubernetes.io/name: prometheus
 
 alertmanager:
   alertmanagerSpec:

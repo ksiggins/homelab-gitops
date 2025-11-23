@@ -76178,6 +76178,13 @@ spec:
             matchExpressions:            
             - {key: app.kubernetes.io/name, operator: In, values: [prometheus]}
             - {key: app.kubernetes.io/instance, operator: In, values: [kube-prometheus-stack-prometheus]}
+  topologySpreadConstraints:
+    - labelSelector:
+        matchLabels:
+          app.kubernetes.io/name: prometheus
+      maxSkew: 1
+      topologyKey: kubernetes.io/hostname
+      whenUnsatisfiable: ScheduleAnyway
   portName: http-web
   hostNetwork: false
 ---
