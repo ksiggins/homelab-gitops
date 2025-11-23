@@ -76115,7 +76115,15 @@ spec:
   listenLocal: false
   enableOTLPReceiver: false
   enableAdminAPI: false
+  resources:
+    limits:
+      cpu: 500m
+      memory: 800Mi
+    requests:
+      cpu: 200m
+      memory: 300Mi
   retention: "7d"
+  retentionSize: "8GiB"
   tsdb:
     outOfOrderTimeWindow: 0s
   walCompression: true

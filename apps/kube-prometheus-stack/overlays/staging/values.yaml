@@ -9,7 +9,17 @@ grafana:
 prometheus:
   prometheusSpec:
     retention: 7d
+    retentionSize: "8GiB"
     serviceMonitorNamespaceSelector: {}
+    enableAdminAPI: false
+    enableFeatures: []
+    resources:
+      requests:
+        cpu: 200m
+        memory: 300Mi
+      limits:
+        cpu: 500m
+        memory: 800Mi
     storageSpec:
       volumeClaimTemplate:
         spec:
