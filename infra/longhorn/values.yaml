@@ -15,3 +15,7 @@ longhornManager:
 metrics:
   serviceMonitor:
     enabled: false
+
+persistence:
+  defaultClass: true
+  defaultClassReplicaCount: 2
