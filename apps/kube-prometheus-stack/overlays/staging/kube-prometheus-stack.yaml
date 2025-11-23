@@ -75750,6 +75750,11 @@ spec:
               value: /var/lib/grafana/plugins
             - name: GF_PATHS_PROVISIONING
               value: /etc/grafana/provisioning
+            - name: GOMEMLIMIT
+              valueFrom:
+                resourceFieldRef:
+                  divisor: "1"
+                  resource: limits.memory
           livenessProbe:
             failureThreshold: 10
             httpGet:
@@ -75761,6 +75766,13 @@ spec:
             httpGet:
               path: /api/health
               port: 3000
+          resources:
+            limits:
+              cpu: 300m
+              memory: 400Mi
+            requests:
+              cpu: 100m
+              memory: 150Mi
       volumes:
         - name: config
           configMap:
@@ -76010,6 +76022,13 @@ spec:
   alertmanagerConfigSelector: {}
   alertmanagerConfigNamespaceSelector:
     {}
+  resources:
+    limits:
+      cpu: 150m
+      memory: 150Mi
+    requests:
+      cpu: 50m
+      memory: 50Mi
   routePrefix: "/"
   securityContext:
     fsGroup: 2000

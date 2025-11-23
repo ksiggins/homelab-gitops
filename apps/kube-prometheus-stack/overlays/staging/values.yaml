@@ -5,6 +5,13 @@ grafana:
     passwordKey: admin-password
   persistence:
     enabled: false
+  resources:
+    requests:
+      cpu: 100m
+      memory: 150Mi
+    limits:
+      cpu: 300m
+      memory: 400Mi
 
 prometheus:
   prometheusSpec:
@@ -38,6 +45,13 @@ prometheus:
 alertmanager:
   alertmanagerSpec:
     useExistingSecret: true
+    resources:
+      requests:
+        cpu: 50m
+        memory: 50Mi
+      limits:
+        cpu: 150m
+        memory: 150Mi
     storage:
       volumeClaimTemplate:
         spec:
