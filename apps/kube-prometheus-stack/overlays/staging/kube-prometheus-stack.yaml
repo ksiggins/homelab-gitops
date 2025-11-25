@@ -76136,11 +76136,11 @@ spec:
   enableAdminAPI: false
   resources:
     limits:
-      cpu: 500m
-      memory: 800Mi
+      cpu: 800m
+      memory: 1500Mi
     requests:
       cpu: 200m
-      memory: 300Mi
+      memory: 500Mi
   retention: "7d"
   retentionSize: "8GiB"
   tsdb:
