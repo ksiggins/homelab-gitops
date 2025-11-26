@@ -5,6 +5,9 @@
   - Homelab GitOps:
     - href: https://github.com/ksiggins/homelab-gitops
       icon: github-light.svg
+  - Dashboard Icons:
+    - href: https://github.com/homarr-labs/dashboard-icons
+      icon: github-light.svg
 - Cloud Services:
   - Cloudflare:
     - href: https://dash.cloudflare.com
@@ -15,6 +18,9 @@
   - Helm Charts:
     - href: https://artifacthub.io
       icon: artifacthub.svg
+  - Public KeyDB:
+    - href: http://fvonline-db.bplaced.net
+      icon: makemkv.png
 - Local Area Network:
   - Unifi Network:
     - href: https://192.168.0.1
