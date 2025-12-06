@@ -20,13 +20,6 @@ prometheus:
     serviceMonitorNamespaceSelector: {}
     enableAdminAPI: false
     enableFeatures: []
-    resources:
-      requests:
-        cpu: 200m
-        memory: 500Mi
-      limits:
-        cpu: 800m
-        memory: 1500Mi
     storageSpec:
       volumeClaimTemplate:
         spec:
@@ -45,13 +38,6 @@ prometheus:
 alertmanager:
   alertmanagerSpec:
     useExistingSecret: true
-    resources:
-      requests:
-        cpu: 50m
-        memory: 50Mi
-      limits:
-        cpu: 150m
-        memory: 150Mi
     storage:
       volumeClaimTemplate:
         spec:

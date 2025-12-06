@@ -76022,13 +76022,6 @@ spec:
   alertmanagerConfigSelector: {}
   alertmanagerConfigNamespaceSelector:
     {}
-  resources:
-    limits:
-      cpu: 150m
-      memory: 150Mi
-    requests:
-      cpu: 50m
-      memory: 50Mi
   routePrefix: "/"
   securityContext:
     fsGroup: 2000
@@ -76134,13 +76127,6 @@ spec:
   listenLocal: false
   enableOTLPReceiver: false
   enableAdminAPI: false
-  resources:
-    limits:
-      cpu: 800m
-      memory: 1500Mi
-    requests:
-      cpu: 200m
-      memory: 500Mi
   retention: "7d"
   retentionSize: "8GiB"
   tsdb:
