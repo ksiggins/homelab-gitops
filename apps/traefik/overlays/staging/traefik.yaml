@@ -8,7 +8,7 @@ metadata:
   labels:
     app.kubernetes.io/name: traefik
     app.kubernetes.io/instance: traefik-traefik-v2-staging
-    helm.sh/chart: traefik-37.2.0
+    helm.sh/chart: traefik-37.4.0
     app.kubernetes.io/managed-by: Helm
   annotations:
 automountServiceAccountToken: false
@@ -21,7 +21,7 @@ metadata:
   labels:
     app.kubernetes.io/name: traefik
     app.kubernetes.io/instance: traefik-traefik-v2-staging
-    helm.sh/chart: traefik-37.2.0
+    helm.sh/chart: traefik-37.4.0
     app.kubernetes.io/managed-by: Helm
 rules:
   - apiGroups:
@@ -98,7 +98,7 @@ metadata:
   labels:
     app.kubernetes.io/name: traefik
     app.kubernetes.io/instance: traefik-traefik-v2-staging
-    helm.sh/chart: traefik-37.2.0
+    helm.sh/chart: traefik-37.4.0
     app.kubernetes.io/managed-by: Helm
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -118,7 +118,7 @@ metadata:
   labels:
     app.kubernetes.io/name: traefik
     app.kubernetes.io/instance: traefik-traefik-v2-staging
-    helm.sh/chart: traefik-37.2.0
+    helm.sh/chart: traefik-37.4.0
     app.kubernetes.io/managed-by: Helm
   annotations:
 spec:
@@ -150,7 +150,7 @@ metadata:
   labels:
     app.kubernetes.io/name: traefik
     app.kubernetes.io/instance: traefik-traefik-v2-staging
-    helm.sh/chart: traefik-37.2.0
+    helm.sh/chart: traefik-37.4.0
     app.kubernetes.io/managed-by: Helm
   annotations:
 spec:
@@ -174,7 +174,7 @@ spec:
       labels:
         app.kubernetes.io/name: traefik
         app.kubernetes.io/instance: traefik-traefik-v2-staging
-        helm.sh/chart: traefik-37.2.0
+        helm.sh/chart: traefik-37.4.0
         app.kubernetes.io/managed-by: Helm
     spec:
       serviceAccountName: traefik
@@ -182,7 +182,7 @@ spec:
       terminationGracePeriodSeconds: 60
       hostNetwork: false
       containers:
-      - image: docker.io/traefik:v3.5.3
+      - image: docker.io/traefik:v3.6.2
         imagePullPolicy: IfNotPresent
         name: traefik
         resources:
@@ -231,6 +231,7 @@ spec:
             mountPath: /data
           - name: tmp
             mountPath: /tmp
+
         args:
           - "--entryPoints.metrics.address=:9100/tcp"
           - "--entryPoints.traefik.address=:8080/tcp"
@@ -288,7 +289,7 @@ metadata:
   labels:
     app.kubernetes.io/name: traefik
     app.kubernetes.io/instance: traefik-traefik-v2-staging
-    helm.sh/chart: traefik-37.2.0
+    helm.sh/chart: traefik-37.4.0
     app.kubernetes.io/managed-by: Helm
   name: traefik
 spec:

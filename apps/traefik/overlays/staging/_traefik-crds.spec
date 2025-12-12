@@ -2,4 +2,4 @@
 # Not applied to Kubernetes.
 name: traefik-crds
 repo: https://traefik.github.io/charts
-version: 1.11.1
+version: 1.12.0
