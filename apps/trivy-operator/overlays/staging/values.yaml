@@ -1,0 +1,42 @@
+operator:
+  scanJobsConcurrentLimit: 2
+  scanNodeCollectorLimit: 1
+
+  # Enable only essential scanners
+  vulnerabilityScannerEnabled: true
+  configAuditScannerEnabled: true
+  rbacAssessmentScannerEnabled: true
+  exposedSecretScannerEnabled: true
+
+  # Disable heavy scanners
+  infraAssessmentScannerEnabled: false
+  clusterComplianceEnabled: false
+  sbomGenerationEnabled: false
+  clusterSbomCacheEnabled: false
+
+  # Metrics (low cardinality)
+  metricsFindingsEnabled: true
+  metricsVulnIdEnabled: false
+  metricsConfigAuditInfo: false
+  metricsExposedSecretInfo: false
+  metricsInfraAssessmentInfo: false
+  metricsImageInfo: false
+  metricsClusterComplianceInfo: false
+
+service:
+  headless: false
+  metricsPort: 8080
+
+serviceMonitor:
+  enabled: true
+  namespace: monitoring
+  labels:
+    release: kube-prometheus-stack
+
+trivy:
+  mode: Standalone
+  severity: "CRITICAL,HIGH,MEDIUM"
+  ignoreUnfixed: true
+  slow: true
+  timeout: "5m0s"
+  skipJavaDBUpdate: true
