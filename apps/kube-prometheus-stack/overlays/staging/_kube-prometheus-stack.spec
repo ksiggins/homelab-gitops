@@ -3,6 +3,6 @@
 name: kube-prometheus-stack
 repo: https://prometheus-community.github.io/helm-charts
 namespace: monitoring-staging
-version: 79.1.0
+version: 80.2.1
 includeCRDs: true
 valuesFile: values.yaml
