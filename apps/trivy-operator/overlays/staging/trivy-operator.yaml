@@ -848,7 +848,7 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: trivy-operator
-  namespace: monitoring
+  namespace: monitoring-staging
   labels:
     helm.sh/chart: trivy-operator-0.31.0
     app.kubernetes.io/name: trivy-operator

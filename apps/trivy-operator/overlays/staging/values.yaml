@@ -29,7 +29,7 @@ service:
 
 serviceMonitor:
   enabled: true
-  namespace: monitoring
+  namespace: monitoring-staging
   labels:
     release: kube-prometheus-stack
 
