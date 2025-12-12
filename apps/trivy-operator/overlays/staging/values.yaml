@@ -40,3 +40,6 @@ trivy:
   slow: true
   timeout: "5m0s"
   skipJavaDBUpdate: true
+
+compliance:
+  specs: []
