@@ -2,6 +2,6 @@
 # Not applied to Kubernetes.
 name: longhorn
 repo: https://charts.longhorn.io
-version: 1.10.0
+version: 1.10.1
 namespace: longhorn-system
 valuesFile: values.yaml
